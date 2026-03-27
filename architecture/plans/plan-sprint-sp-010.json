@@ -1,0 +1,80 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Scaffold apps/web — Config, Styles & Layout Base",
+      "description": "Como frontend_specialist, eu quero criar toda a configuração do projeto Astro em apps/web/ (package.json, astro.config.mjs, tailwind.config.mjs, tsconfig.json, wrangler.toml, turbo.json atualizado), os estilos globais com @fontsource/inter e o BaseLayout.astro, para que a base do site esteja pronta para receber os componentes de conteúdo.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "package.json em apps/web/ declara name: 'web', scripts dev/build/check/preview e dependências @fontsource/inter, astro, @astrojs/cloudflare, @astrojs/tailwind, tailwindcss, typescript",
+        "astro.config.mjs usa output: 'static' e adapter cloudflare() — NUNCA 'server' ou 'hybrid' (REQ-002)",
+        "tailwind.config.mjs estende tema com cores: accent '#00fa62', bg-base '#0a0a0a', surface '#111111', muted '#888888' e fontFamily sans com Inter (REQ-007)",
+        "src/styles/global.css importa @fontsource/inter/400.css e /700.css via @import, define variáveis CSS :root e html { scroll-behavior: smooth } (REQ-003, REQ-008)",
+        "src/layouts/BaseLayout.astro inclui <html lang='pt-BR'>, <head> com meta charset, viewport, description (mín 120 chars), og:title, og:description, link favicon, e <slot /> no body (REQ-010, REQ-011)",
+        "wrangler.toml declara name e compatibility_date SEM nenhum binding D1/KV/R2/Queues (REQ-006)",
+        "turbo.json na raiz inclui web#build no pipeline (REQ-009)",
+        "pnpm --filter web build executa astro build sem erros e gera apps/web/dist/ (US-001)",
+        "Typecheck passa com pnpm --filter web check (astro check sem erros de tipo)",
+        "Conforme SOP de Edge Compatibility — zero Node.js built-ins, zero process.env"
+      ],
+      "subtasks": [
+        "Criar apps/web/package.json com name 'web', scripts e dependências listadas no PRD §6",
+        "Criar apps/web/astro.config.mjs com output: 'static', adapter cloudflare(), integrations [tailwind()]",
+        "Criar apps/web/tailwind.config.mjs com cores accent/bg-base/surface/muted e fontFamily Inter",
+        "Criar apps/web/tsconfig.json com extends astro/tsconfigs/strict",
+        "Criar apps/web/wrangler.toml com name='taskflow-web' e compatibility_date='2025-01-01' sem bindings",
+        "Criar apps/web/src/styles/global.css com @import fontsource, @tailwind directives, :root vars, html scroll-behavior",
+        "Criar apps/web/src/layouts/BaseLayout.astro importando global.css e expondo slot",
+        "Atualizar turbo.json na raiz para incluir 'web#build' no pipeline",
+        "Criar apps/web/public/favicon.svg com ícone SVG checkmark ou lightning bolt em #00fa62 (REQ-012)"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "apps/web/wrangler.toml",
+        "apps/web/src/styles/global.css",
+        "apps/web/src/layouts/BaseLayout.astro",
+        "apps/web/public/favicon.svg",
+        "turbo.json"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Implementar Componentes Hero, Features, Footer e index.astro",
+      "description": "Como frontend_specialist, eu quero criar os componentes Hero.astro, Features.astro e Footer.astro com conteúdo hardcoded conforme contratos de dados do PRD §2, e a página index.astro que os orquestra via BaseLayout, para que a landing page esteja completa e pronta para deploy.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [
+        "T1"
+      ],
+      "acceptanceCriteria": [
+        "src/components/Hero.astro: seção min-h-screen centralizada com <h1> exibindo 'Organize. Priorize. Entregue.', subtítulo, botão <a href='#features'> com border-accent text-accent (US-002, REQ-004)",
+        "<h1> usa font-size: clamp(2.5rem, 6vw, 4.5rem) via style inline e font-weight 700 — único h1 na página (US-002)",
+        "src/components/Features.astro: seção com id='features', grid 1-col mobile / 3-col md:, três cartões com SVG inline válido hardcoded (sem src externo, sem <img>, sem <use href>) — títulos e descrições conforme PRD §2.2 (US-003, REQ-004)",
+        "Cada cartão Features usa bg-surface (#111111) para contraste (US-003)",
+        "src/components/Footer.astro: exibe 'TaskFlow', tagline 'Built for makers.', copyright com ano avaliado em build-time via new Date().getFullYear(), texto text-muted, py-8, text-center, sem links externos (US-004)",
+        "src/pages/index.astro importa e usa BaseLayout, Hero, Features, Footer sem lógica adicional",
+        "pnpm --filter web build gera dist/ sem nenhuma tag <script> com código de aplicação no HTML — validado via grep no dist/ (REQ-005)",
+        "astro build não gera warnings de <img> sem alt ou SVGs malformados (US-003)",
+        "JavaScript desabilitado no browser: página renderiza 100% funcionalmente (REQ-005)",
+        "Typecheck passa — zero uso de 'any', ARIA label no botão CTA presente",
+        "Conforme SOP de Edge Compatibility — zero imports proibidos, zero Node.js APIs"
+      ],
+      "subtasks": [
+        "Criar apps/web/src/components/Hero.astro com seção hero conforme PRD §2.1 e §9.6 — botão âncora #features com classes accent",
+        "Criar apps/web/src/components/Features.astro com array de 3 features hardcoded (PRD §2.2), SVGs inline válidos para cada feature, grid responsivo 1/3 colunas, id='features'",
+        "Criar apps/web/src/components/Footer.astro com brand, tagline, copyright dinâmico build-time, sem links externos (PRD §2.3)",
+        "Criar apps/web/src/pages/index.astro importando BaseLayout + Hero + Features + Footer (PRD §9.5)",
+        "Verificar output do astro build: grep -r '<script' apps/web/dist/ deve retornar vazio (REQ-005)"
+      ],
+      "targetFiles": [
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro"
+      ]
+    }
+  ]
+}
