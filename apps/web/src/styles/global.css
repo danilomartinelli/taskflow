@@ -1,0 +1,23 @@
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/700.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-accent: #00fa62;
+  --color-bg-base: #0a0a0a;
+  --color-surface: #111111;
+  --color-muted: #888888;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--color-bg-base);
+  color: white;
+  font-family: 'Inter', sans-serif;
+}

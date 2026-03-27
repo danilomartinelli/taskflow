@@ -1,2 +1,3 @@
 name = "taskflow-web"
-pages_build_output_dir = "./dist"
+main = "dist/worker.js"
+compatibility_date = "2025-01-01"
