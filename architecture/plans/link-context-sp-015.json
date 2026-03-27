@@ -1,0 +1,18 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[INFO] Este sprint cria o workspace apps/web do zero. Não há código legado reutilizável no code-map para este contexto — todos os arquivos devem ser criados conforme REQ-007.",
+    "[INFO] Zero bindings Cloudflare e zero APIs externas. O PRD seção 6 confirma explicitamente: nenhum secret, nenhuma variável de ambiente, nenhum binding necessário.",
+    "[CLOUDFLARE-PAGES] O deploy é via Cloudflare Pages (não Workers). O wrangler.toml deve ter pages_build_output_dir = \"dist\" e NÃO um campo [build] de Workers. Confirmar que o pipeline do Turborepo não tenta executar wrangler deploy em modo Workers.",
+    "[ASTRO-STATIC] output: 'static' no astro.config.mjs é obrigatório. Qualquer adaptador de runtime (ex: @astrojs/cloudflare) é proibido neste sprint — violaria RT-001 (Zero JS no cliente).",
+    "[TAILWIND] A integração deve ser @astrojs/tailwind (integração oficial). NÃO usar o modo standalone do Tailwind CLI nem PostCSS manual, pois o Astro gerencia o pipeline.",
+    "[FONTSOURCE] @fontsource/inter deve ser importado via CSS (@import) no global.css — NÃO via Google Fonts link tag. Isso está em RT-004 e é crítico para zero dependências externas de DNS.",
+    "[SVG-INLINE] RT-003 proíbe bibliotecas de ícones (astro-icon, lucide-astro, heroicons). Os SVGs devem ser strings inline nos componentes .astro com stroke='#00fa62' width='32' height='32'.",
+    "[ZERO-JS] Verificar após o build que dist/ não contém arquivos .js. Se aparecerem, inspecionar se algum componente usou client:* directive (proibido por RT-001 e NG-008).",
+    "[TURBO] Garantir que turbo.json na raiz declare os pipelines build, check e dev para o workspace web. Sem isso, pnpm --filter web build pode não ser orquestrado corretamente pelo Turborepo.",
+    "[COPYRIGHT] O footer pode usar {new Date().getFullYear()} em template Astro — avaliado em build time, não runtime. Isso é explicitamente permitido por RT-006 e não viola Zero JS."
+  ],
+  "reuseCandidates": []
+}
