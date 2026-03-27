@@ -1,0 +1,18 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[CONTEXTO]: Esta sprint cria o workspace `apps/web` do zero — ele NÃO existe ainda no monorepo. O code-map atual cobre apenas `apps/api` e pacotes backend. Nenhuma colisão de arquivos esperada.",
+    "[RESTRIÇÃO CRÍTICA RT-02]: O workspace `apps/web` deve ser completamente isolado dos pacotes internos do monorepo. PROIBIDO importar `packages/db`, `packages/shared` ou `packages/email`. O `package.json` de `apps/web` deve listar APENAS: `astro`, `@astrojs/tailwind`, `tailwindcss` e `@fontsource/inter`.",
+    "[RESTRIÇÃO CRÍTICA RT-01]: Output Astro deve ser `static` (SSG puro). A diretiva `client:*` é PROIBIDA em todos os componentes. Qualquer uso emitirá JavaScript e violará REQ-013 (zero .js no output).",
+    "[RESTRIÇÃO RT-04]: Ícones SVG devem ser inline no HTML — PROIBIDO usar lucide-react, heroicons/react ou qualquer biblioteca de ícones com runtime JS.",
+    "[RESTRIÇÃO RT-03]: Fonte Inter DEVE ser carregada via `@fontsource/inter` (self-hosted), NÃO via Google Fonts CDN.",
+    "[TURBOREPO CL-02]: Ao adicionar `apps/web`, verificar se `turbo.json` inclui o pipeline `web#build`. O `pnpm-workspace.yaml` já cobre `apps/*` — nenhuma alteração necessária nele.",
+    "[GITIGNORE REQ-014]: Adicionar `apps/web/dist` ao `.gitignore` da raiz do monorepo.",
+    "[DEPLOY]: Cloudflare Pages (SSG estático), NÃO Cloudflare Workers. Zero bindings (D1, KV, R2, Queues). Build command: `pnpm --filter web build`. Output dir: `apps/web/dist`. Node.js version: 20 (variável de build `NODE_VERSION=20` no dashboard do Pages).",
+    "[VALIDAÇÃO DoD]: Sem testes unitários. Validação exclusivamente por `pnpm --filter web run check` (astro check, zero erros) e `pnpm --filter web run build` (astro build, zero erros, zero .js referenciado no HTML gerado).",
+    "[CTA HERO REQ-008]: O botão CTA deve ser `<a href=\"#features\">` — NUNCA `<button>` ou elemento com `onclick`. Âncora pura, zero JavaScript."
+  ],
+  "reuseCandidates": []
+}
