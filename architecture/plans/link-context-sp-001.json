@@ -1,0 +1,18 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[INFO]: Nenhum binding Cloudflare necessário nesta sprint. O projeto é um site estático puro hospedado no Cloudflare Pages — sem Workers, D1, KV, R2 ou Queues.",
+    "[INFO]: Google Fonts (Inter) é carregado via <link> público no <head> — nenhuma API key necessária.",
+    "[ARCH]: Nenhuma variável de ambiente necessária. O projeto é completamente estático conforme seção 6 do PRD.",
+    "[ARCH]: Astro roda em build-time, não no edge runtime Cloudflare Workers. As restrições de edge-compatibility (SOP-02) não se aplicam ao build tooling desta sprint — Astro, @astrojs/tailwind e TailwindCSS são dependências de build seguras.",
+    "[ARCH]: O workspace apps/web deve ser criado do zero. Verificar se apps/web/ já existe antes de criar arquivos — usar list_directory na raiz do monorepo.",
+    "[ARCH]: O tailwind.config.mjs DEVE ser criado antes dos componentes. Tokens de design obrigatórios: bg=#0a0a0a, text=#f5f5f5, neon=#00fa62, surface=#111111, border=#1f1f1f, muted=cor de texto secundária. Sem esses tokens, as classes Tailwind customizadas (bg-bg, text-neon, bg-surface, etc.) não funcionarão.",
+    "[ARCH]: O turbo.json raiz deve ser atualizado para incluir o pipeline do workspace web (outputs: dist/**, .astro/**) conforme REQ-010. Verificar se turbo.json já existe antes de sobrescrever.",
+    "[ARCH]: Restrição crítica Zero JS — astro.config.mjs deve definir output: 'static' e NÃO deve incluir @astrojs/react nem qualquer diretiva client:*. Nenhum arquivo .js de aplicação deve aparecer no dist/.",
+    "[ARCH]: SVGs devem ser inline no HTML final (não <img src>). O padrão de <slot name='icon'> no FeatureCard.astro garante isso — os SVGs são passados como markup direto, não como assets externos.",
+    "[ARCH]: RC-5 — Antes do deploy, validar com pnpm turbo build --filter=@taskflow/web localmente. O wrangler.toml em apps/web/ define pages_build_output_dir='dist' e name='taskflow-web'."
+  ],
+  "reuseCandidates": []
+}
