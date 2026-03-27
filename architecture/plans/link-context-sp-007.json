@@ -1,0 +1,18 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[PRD]: Esta sprint cria apps/web do zero — monorepo vazio, nenhum componente reutilizável existe ainda. O Stylizer deve criar toda a estrutura em apps/web/ conforme especificado no PRD (seção 8).",
+    "[PRD]: output mode DEVE ser 'static' no astro.config.mjs (REQ-002). Nenhuma diretiva client:* pode ser usada (REQ-006). Verificar dist/ após build para confirmar ausência de bundles .js.",
+    "[PRD]: TailwindCSS content DEVE incluir './src/**/*.{astro,html}' para purge correto (REQ-003). tailwind.config.mjs fica em apps/web/, NÃO na raiz do monorepo.",
+    "[PRD]: @fontsource/inter deve ser importado no layout base (layouts/Base.astro), não em componentes filhos. Usar import '@fontsource/inter/400.css' ou similar para variantes específicas.",
+    "[PRD]: scroll-behavior: smooth deve ser aplicado via CSS global no seletor html (ou classe Tailwind scroll-smooth no <html>). PROIBIDO usar window.scrollTo() ou element.scrollIntoView().",
+    "[PRD]: SVGs dos FeatureCards devem ser inline no markup .astro — proibido usar <img> ou <Image> do Astro para ícones.",
+    "[PRD]: package.json de apps/web deve ter name '@taskflow/web' e scripts build (astro build), check (astro check) e dev (astro dev) para compatibilidade com turbo pipeline.",
+    "[PRD]: Cloudflare Pages output directory = apps/web/dist (caminho relativo à raiz do repositório). Confirmar configuração no dashboard do Pages.",
+    "[STACK]: Nenhum binding Cloudflare (D1, R2, KV, AI, Queues) é necessário — aplicação 100% estática sem Workers.",
+    "[STACK]: Nenhuma variável de ambiente necessária. Sprint pode prosseguir imediatamente sem input do usuário."
+  ],
+  "reuseCandidates": []
+}
