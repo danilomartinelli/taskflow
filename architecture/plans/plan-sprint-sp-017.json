@@ -1,0 +1,67 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Criar workspace apps/web com Astro + TailwindCSS + Inter e todos os componentes da landing page",
+      "description": "Como frontend_specialist, eu quero criar o workspace apps/web completo no monorepo Turborepo com Astro configurado para output estático, TailwindCSS com paleta customizada, fonte Inter via @fontsource, e todos os componentes da landing page (BaseLayout, Hero, Features, FeatureCard, Footer, index.astro), garantindo zero JS no cliente e build funcional.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "pnpm --filter web build executa com sucesso e gera apps/web/dist/index.html",
+        "pnpm --filter web astro check retorna zero erros TypeScript",
+        "O dist/index.html NÃO contém tags <script> (zero JS cliente) — verificar com grep '<script' apps/web/dist/index.html",
+        "O dist/_astro/ NÃO contém arquivos .js — ls apps/web/dist/_astro/*.js deve retornar vazio",
+        "A fonte Inter é importada via @fontsource/inter/400.css e @fontsource/inter/700.css como imports estáticos no BaseLayout.astro (sem Google Fonts CDN)",
+        "O astro.config.mjs usa output: 'static' sem @astrojs/cloudflare adapter",
+        "O tailwind.config.mjs define theme.extend.colors com neon: '#00fa62', dark: '#0a0a0a', surface: '#111111', border: '#1f1f1f', muted: '#888888'",
+        "O <html> possui scroll-behavior: smooth (via CSS global ou classe Tailwind scroll-smooth)",
+        "O CTA da Hero é <a href='#features'> (não <button> com JS)",
+        "A seção Features possui id='features'",
+        "Exatamente 3 cards de feature são renderizados com SVG inline (não <img src>)",
+        "Em desktop (≥768px) os 3 cards estão em grid de 3 colunas; em mobile (<768px) em coluna única (md:grid-cols-3)",
+        "Footer contém copyright com ano 2025 e nome TaskFlow",
+        "O <h1> existe uma única vez na página",
+        "O package.json raiz lista apps/web em workspaces",
+        "O apps/web/package.json tem name: 'web', private: true, e scripts dev/build/check",
+        "O turbo.json raiz inclui pipeline build que cobre o workspace web (REQ-011)",
+        "Meta tags essenciais presentes: charset UTF-8, viewport, title TaskFlow, meta description",
+        "favicon.svg referenciado no <head>",
+        "[ZERO-JS]: Nenhum componente usa diretivas client:load, client:idle, client:visible, client:only — verificar com grep -r 'client:' apps/web/src (deve retornar vazio)",
+        "[SVG-INLINE]: Todos os ícones da seção Features são SVG markup inline — não referenciam arquivos externos",
+        "[FONTSOURCE]: Imports de @fontsource/inter/400.css e @fontsource/inter/700.css presentes no BaseLayout.astro"
+      ],
+      "subtasks": [
+        "1. Verificar estrutura atual do monorepo com list_directory na raiz para confirmar workspaces existentes e conteúdo do package.json raiz e turbo.json",
+        "2. Criar apps/web/package.json com name 'web', private true, scripts dev/build/check e dependências: astro, @astrojs/tailwind, tailwindcss, @fontsource/inter",
+        "3. Atualizar package.json raiz adicionando 'apps/web' ao campo workspaces (se não estiver listado)",
+        "4. Criar apps/web/astro.config.mjs com output: 'static' e integração @astrojs/tailwind (SEM @astrojs/cloudflare adapter)",
+        "5. Criar apps/web/tailwind.config.mjs com theme.extend.colors: { neon: '#00fa62', dark: '#0a0a0a', surface: '#111111', border: '#1f1f1f', muted: '#888888' }",
+        "6. Criar apps/web/tsconfig.json estendendo configuração base do monorepo (ou configuração mínima para Astro)",
+        "7. Criar apps/web/src/layouts/BaseLayout.astro com <head> completo (charset, viewport, title, description, favicon), imports de @fontsource/inter/400.css e /700.css, e <html class='scroll-smooth'> ou scroll-behavior: smooth no CSS global",
+        "8. Criar apps/web/src/components/Hero.astro com <h1> tagline, <p> subtítulo, e <a href='#features'> CTA com background neon (#00fa62) e texto escuro",
+        "9. Criar apps/web/src/components/FeatureCard.astro aceitando props { icon: string (SVG markup), title: string, description: string }",
+        "10. Criar apps/web/src/components/Features.astro com id='features', grid responsivo (grid-cols-1 md:grid-cols-3), e 3 instâncias de FeatureCard com SVGs inline distintos (ex: ícones de task/check, velocidade/raio, colaboração/pessoas)",
+        "11. Criar apps/web/src/components/Footer.astro com copyright '© 2025 TaskFlow' em tom muted (#888888), fundo dark consistente",
+        "12. Criar apps/web/src/pages/index.astro compondo BaseLayout > Hero > Features > Footer",
+        "13. Criar apps/web/public/favicon.svg (SVG simples com a inicial T ou ícone minimalista)",
+        "14. Verificar turbo.json raiz — se não houver pipeline build genérico cobrindo todos os workspaces, adicionar entrada explícita para web",
+        "15. Validar: grep -r 'client:' apps/web/src (deve retornar vazio) e grep '<script' apps/web/dist/index.html (deve retornar vazio após build)"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "apps/web/src/layouts/BaseLayout.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/FeatureCard.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro",
+        "apps/web/public/favicon.svg",
+        "package.json",
+        "turbo.json"
+      ]
+    }
+  ]
+}
