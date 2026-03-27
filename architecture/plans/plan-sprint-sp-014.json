@@ -1,0 +1,73 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Scaffold apps/web — configuração do workspace Astro + Tailwind",
+      "description": "Criar toda a estrutura de configuração do workspace @taskflow/web: package.json, astro.config.mjs, tailwind.config.mjs, tsconfig.json e atualizar turbo.json com pipeline 'check'. Esta task estabelece a fundação do projeto Astro estático.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "package.json em apps/web/ tem name exatamente '@taskflow/web' e scripts: { build: 'astro build', dev: 'astro dev', check: 'astro check' }",
+        "astro.config.mjs tem output: 'static' explícito e integrations: [tailwind()]",
+        "tailwind.config.mjs tem content apontando para src/**/*.{astro,html,js,ts} e tema estendido com cor neon #00fa62",
+        "tsconfig.json estende 'astro/tsconfigs/strict'",
+        "turbo.json contém pipeline 'check' com outputs:[] para suportar turbo run check",
+        "@fontsource/inter está em dependencies (não devDependencies)",
+        "Typecheck passa (astro check zero erros)"
+      ],
+      "subtasks": [
+        "Criar apps/web/package.json com name @taskflow/web, dependencies (@fontsource/inter, @astrojs/tailwind, astro, tailwindcss) e scripts build/dev/check",
+        "Criar apps/web/astro.config.mjs com output: 'static' e integrations: [tailwind()]",
+        "Criar apps/web/tailwind.config.mjs com content glob e extend de cores (#00fa62, #0a0a0a, zinc shades)",
+        "Criar apps/web/tsconfig.json estendendo astro/tsconfigs/strict",
+        "Verificar turbo.json na raiz e adicionar pipeline 'check' se ausente",
+        "Criar apps/web/public/favicon.svg com ícone 'T' estilizado em #00fa62 sobre fundo transparente"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "apps/web/public/favicon.svg",
+        "turbo.json"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Implementar Layout.astro, páginas e componentes da landing page",
+      "description": "Criar o layout base com @fontsource/inter e todos os componentes da landing page (Hero, Features, Footer) e a página index.astro que os compõe. Zero JavaScript no cliente — apenas HTML + CSS via Tailwind e SVGs inline.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [
+        "T1"
+      ],
+      "acceptanceCriteria": [
+        "Layout.astro importa @fontsource/inter/400.css e @fontsource/inter/700.css no <head>",
+        "Layout.astro define <html lang='pt-BR' class='dark'> com scroll-behavior: smooth no seletor html via CSS global",
+        "Layout.astro tem background-color: #0a0a0a e color: #ffffff no body, viewport meta e description meta",
+        "index.astro compõe Hero → Features → Footer dentro do Layout",
+        "Hero.astro tem <h1> com texto exato 'Organize. Foque. Entregue.' em Inter 700, cor #00fa62, mínimo text-5xl desktop",
+        "Hero.astro tem <a href='#features'> estilizado como botão primário (NÃO <button>) — REQ-009",
+        "Features.astro tem <section id='features'> com grid grid-cols-1 md:grid-cols-3 gap-8 e exatamente 3 features",
+        "Cada feature tem SVG inline (não <img>) com width/height 32 e fill/stroke #00fa62 — ícones: checkbox, user-group, crosshair",
+        "Footer.astro tem <footer> com border-top #27272a, texto '© 2025 TaskFlow. Todos os direitos reservados.' em #52525b, text-center, py-8",
+        "Após astro build, ls apps/web/dist/_astro/*.js retorna vazio (zero arquivos .js no output)",
+        "Typecheck passa (astro check zero erros)"
+      ],
+      "subtasks": [
+        "Criar apps/web/src/layouts/Layout.astro com imports @fontsource/inter, meta tags, CSS global (scroll-behavior, background, color, font-family)",
+        "Criar apps/web/src/pages/index.astro importando Layout e compondo Hero + Features + Footer",
+        "Criar apps/web/src/components/Hero.astro com h1, parágrafo subtítulo, <a href='#features'> como CTA botão",
+        "Criar apps/web/src/components/Features.astro com section id='features', h2, grid 3 colunas responsivo e 3 feature cards com SVG inline cada",
+        "Criar apps/web/src/components/Footer.astro com tag semântica footer, texto copyright, estilos conforme REQ-013",
+        "Verificar build: executar astro build e confirmar ausência de .js em dist/_astro/"
+      ],
+      "targetFiles": [
+        "apps/web/src/layouts/Layout.astro",
+        "apps/web/src/pages/index.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro"
+      ]
+    }
+  ]
+}
