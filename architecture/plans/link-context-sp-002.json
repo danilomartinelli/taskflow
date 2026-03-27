@@ -1,0 +1,22 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[INFO] Sprint 100% estática: zero APIs externas, zero bindings Cloudflare, zero variáveis de ambiente necessárias. Nenhum bloqueio de secrets.",
+    "[INFO] Projeto identificado como TaskFlow — landing page estática em Astro deployada no Cloudflare Pages (apps/web).",
+    "[ARCH] Novo workspace apps/web deve ser criado do zero. Estrutura definida no PRD: apps/web/src/{layouts,components,pages} + astro.config.mjs + tailwind.config.mjs + wrangler.toml.",
+    "[ARCH] Verificar se turbo.json existe na raiz do monorepo antes de criar. Se existir, APENAS adicionar pipeline build/dev sem remover entradas existentes. Se não existir, criar com schema https://turbo.build/schema.json.",
+    "[ARCH] astro.config.mjs DEVE ter output: 'static' e integrations: [tailwind()]. Qualquer outra configuração de output viola REQ-002 e gera JS no cliente.",
+    "[ARCH] PROIBIDO usar diretivas client:* em qualquer componente Astro (client:load, client:idle, client:visible, client:only). Violação invalida o DoD da sprint inteira.",
+    "[ARCH] SVGs DEVEM ser inline no markup dos componentes .astro. Proibido <img src='*.svg'>, <use href='sprite.svg#icon'> ou bibliotecas de ícones com bundle JS (ex: react-icons, lucide-react).",
+    "[ARCH] O CTA do Hero usa href='#features' — scroll nativo do browser, zero JS. NÃO implementar smooth scroll via JavaScript mesmo que pareça melhoria óbvia.",
+    "[ARCH] A seção Features DEVE ter id='features' para servir como âncora do CTA. Sem esse atributo o link do Hero quebra silenciosamente.",
+    "[ARCH] wrangler.toml em apps/web deve conter pages_build_output_dir = 'dist' para integração correta com Cloudflare Pages CI/CD futuro.",
+    "[ARCH] package.json do workspace deve ter name: 'web' (não 'taskflow-web' nem '@taskflow/web') para compatibilidade com o filtro pnpm --filter web build usado no Cloudflare Pages Dashboard.",
+    "[ARCH] Componentes ficam ISOLADOS em apps/web/src/components/ nesta sprint — extração para packages/ui é explicitamente non-goal. Não criar pacote compartilhado.",
+    "[ARCH] Gerenciamento de dependências EXCLUSIVAMENTE via pnpm. Proibido npm install ou yarn add conforme doutrina do monorepo.",
+    "[ARCH] DoD de deploy (US-005): Lighthouse Performance >= 90 contra URL pública. Página estática com zero JS e TailwindCSS purged deve atingir facilmente — não adicionar recursos que aumentem peso do bundle."
+  ],
+  "reuseCandidates": []
+}
