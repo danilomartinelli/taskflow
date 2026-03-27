@@ -1,0 +1,56 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Criar workspace Astro apps/web com todos os componentes e página index",
+      "description": "Como frontend_specialist, eu quero criar o workspace completo apps/web com Astro 4 + TailwindCSS, incluindo configuração do projeto, layout base, todos os componentes (Hero, Features, FeatureCard, Footer) e a página index.astro, garantindo zero JavaScript no cliente e design dark com acento verde neon.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "pnpm --filter @taskflow/web check retorna zero erros de tipo/template",
+        "pnpm --filter @taskflow/web build gera dist/index.html sem erros ou warnings",
+        "dist/ não contém nenhum arquivo .js referenciado em tags <script> no HTML de saída",
+        "astro.config.mjs declara output: 'static' explicitamente e integração @astrojs/tailwind — SEM @astrojs/cloudflare",
+        "tailwind.config.mjs define os tokens: bg '#0a0a0a', surface '#111111', neon '#00fa62', muted '#6b7280' e fontFamily Inter",
+        "BaseLayout.astro importa '@fontsource/inter' via import CSS (não CDN Google Fonts) e o elemento <html> tem class='scroll-smooth'",
+        "<body> usa class='bg-bg text-white font-sans antialiased' conforme REQ-004",
+        "Hero.astro exibe headline 'Organize. Colabore. Entregue.' em <h1> único na página e botão CTA é <a href='#features'> — NUNCA <button> com JS",
+        "Features.astro tem id='features' no elemento pai da seção para funcionar como alvo da âncora",
+        "FeatureCard.astro renderiza os três ícones (check-circle, users, zap) como SVG inline no HTML — verificável via view-source, zero requests de imagem",
+        "Seção features renderiza exatamente 3 cards em grid-cols-1 em mobile (375px) e grid-cols-3 em desktop (1280px)",
+        "Footer.astro exibe copyright com ano gerado via new Date().getFullYear() em build-time — zero JS no cliente",
+        "package.json tem nome '@taskflow/web' e scripts: dev='astro dev', build='astro build', check='astro check'",
+        "pnpm-workspace.yaml inclui 'apps/*' (verificar existência — se já inclui, não alterar; se não existe, criar com inclusão de apps/* e packages/*)",
+        "Typecheck passa (astro check zero erros)"
+      ],
+      "subtasks": [
+        "Criar apps/web/package.json com nome @taskflow/web, scripts dev/build/check e dependências: astro ^4.0.0, @astrojs/tailwind ^5.0.0, @fontsource/inter ^5.0.0, tailwindcss ^3.4.0",
+        "Criar apps/web/astro.config.mjs com output: 'static' e integração tailwind() — sem adapter cloudflare",
+        "Criar apps/web/tailwind.config.mjs com tokens de cor (bg, surface, neon, muted) e fontFamily Inter",
+        "Criar apps/web/tsconfig.json estendendo defaults do Astro (extends: 'astro/tsconfigs/strict')",
+        "Criar apps/web/public/favicon.svg com inicial 'T' na cor neon #00fa62",
+        "Criar apps/web/src/layouts/BaseLayout.astro com import @fontsource/inter, meta tags (title, description, og:*), html class=scroll-smooth, body class=bg-bg",
+        "Criar apps/web/src/components/FeatureCard.astro com Props interface (icon, title, description) e SVG inline para os três ícones (check-circle, users, zap) na cor text-neon",
+        "Criar apps/web/src/components/Features.astro com id='features', grid responsivo e 3 instâncias de FeatureCard com o copy do PRD",
+        "Criar apps/web/src/components/Hero.astro com headline em <h1>, subheadline, e CTA <a href='#features'> estilizado com bg-neon",
+        "Criar apps/web/src/components/Footer.astro com copyright e ano dinâmico em build-time",
+        "Criar apps/web/src/pages/index.astro importando BaseLayout, Hero, Features e Footer",
+        "Verificar pnpm-workspace.yaml na raiz: se 'apps/*' já está listado, não alterar; caso contrário, adicionar apps/* e packages/*"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "apps/web/public/favicon.svg",
+        "apps/web/src/layouts/BaseLayout.astro",
+        "apps/web/src/components/FeatureCard.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro",
+        "pnpm-workspace.yaml"
+      ]
+    }
+  ]
+}
