@@ -1,0 +1,77 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Setup Workspace apps/web — Configuração Base (package.json, wrangler.toml, astro.config.mjs, tailwind.config.mjs, tsconfig.json, turbo.json)",
+      "description": "Como FrontendSpecialist, eu quero criar toda a infraestrutura de configuração do workspace apps/web para que o Turborepo, pnpm, Astro e Tailwind estejam prontos para build e deploy no Cloudflare Pages. Inclui registro no pnpm-workspace.yaml da raiz e atualização do turbo.json raiz.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "package.json em apps/web tem name='web', private=true, scripts dev/build/check, engines >=18, e dependências conforme RT-007",
+        "wrangler.toml em apps/web tem name='taskflow-web', pages_build_output_dir='dist', compatibility_date='2025-01-01' — SEM campo [build] de Workers (conforme nota CLOUDFLARE-PAGES do Link Agent)",
+        "astro.config.mjs tem output: 'static' e integração @astrojs/tailwind — SEM adaptador de runtime (conforme RT-001 e nota ASTRO-STATIC)",
+        "tailwind.config.mjs estende tema com cores neon-green (#00fa62) e dark-bg (#0a0a0a), fontFamily Inter, content glob cobrindo src/**/*.astro",
+        "tsconfig.json válido para Astro (extends astro/tsconfigs/strict ou base)",
+        "pnpm-workspace.yaml na raiz inclui 'apps/*' (adicionar se ausente)",
+        "turbo.json na raiz declara pipelines build, check e dev com o workspace web (conforme nota TURBO do Link Agent)",
+        "Typecheck passa: pnpm --filter web check retorna zero erros"
+      ],
+      "subtasks": [
+        "Criar apps/web/package.json com name, private, scripts, engines e dependências (RT-007)",
+        "Criar apps/web/wrangler.toml conforme REQ-005 — pages_build_output_dir='dist', sem seção [build] Workers",
+        "Criar apps/web/astro.config.mjs com output:'static' e integração @astrojs/tailwind",
+        "Criar apps/web/tailwind.config.mjs com extend de cores e fontFamily conforme REQ-003",
+        "Criar apps/web/tsconfig.json",
+        "Verificar/atualizar pnpm-workspace.yaml na raiz para incluir apps/* (REQ-006)",
+        "Verificar/atualizar turbo.json na raiz para incluir pipelines build, check, dev (REQ-006)"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/wrangler.toml",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "pnpm-workspace.yaml",
+        "turbo.json"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Implementar Landing Page Completa — Layout, Componentes e Página Index",
+      "description": "Como FrontendSpecialist, eu quero criar todos os componentes Astro (BaseLayout, Hero, Features, Footer) e a página index.astro compondo-os, resultando em um HTML estático 100% sem JS cliente, com fontes @fontsource/inter via CSS, ícones SVG inline com stroke #00fa62, e validação de build passando.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [
+        "T1"
+      ],
+      "acceptanceCriteria": [
+        "src/styles/global.css importa @fontsource/inter/400.css, 600.css e 700.css via @import CSS (NÃO via Google Fonts link tag — conforme nota FONTSOURCE do Link Agent) e define html com scroll-behavior:smooth, background #0a0a0a, color white (REQ-004, RT-002)",
+        "BaseLayout.astro tem <html lang='pt-BR'>, meta charset, meta viewport, título, import de global.css e slot — NENHUMA tag <script> de runtime (REQ-008)",
+        "Hero.astro renderiza <section id='hero'> com h1 'TaskFlow', parágrafo de subtítulo, e <a href='#features'> como CTA com classes Tailwind conforme REQ-009 e REQ-010",
+        "Features.astro renderiza <section id='features'> com grid md:grid-cols-3, exatamente 3 cards com SVG inline (fill=none, stroke=#00fa62, width=32, height=32), título h3 e parágrafo conforme REQ-011, REQ-012, REQ-013, REQ-014 — ZERO bibliotecas de ícones (conforme RT-003 e nota SVG-INLINE)",
+        "Footer.astro renderiza <footer> com texto '© {ano} TaskFlow' (ano via new Date().getFullYear() em build time — permitido por RT-006), sem links, com classes text-center py-8 text-gray-600 text-sm border-t border-[#1a1a1a] (REQ-015)",
+        "index.astro compõe BaseLayout + Hero + Features + Footer sem nenhuma directive client:* (proibido por RT-001 e NG-008)",
+        "pnpm --filter web check passa com zero erros e zero warnings (REQ-016)",
+        "pnpm --filter web build gera apps/web/dist/ com index.html e CSS — diretório dist/ NÃO contém arquivos .js de client-side (REQ-017, RT-001, nota ZERO-JS)",
+        "HTML gerado tem h1 único, lang='pt-BR', meta description presente (REQ-018)"
+      ],
+      "subtasks": [
+        "Criar apps/web/src/styles/global.css com @import @fontsource/inter e estilos base (REQ-004)",
+        "Criar apps/web/src/layouts/BaseLayout.astro com html lang=pt-BR, metas, slot e import global.css (REQ-008)",
+        "Criar apps/web/src/components/Hero.astro com section#hero, h1, p subtítulo e <a> CTA (REQ-009, REQ-010)",
+        "Criar apps/web/src/components/Features.astro com section#features, grid 3 cards, SVGs inline stroke=#00fa62, conteúdo dos 3 cards (REQ-011 a REQ-014)",
+        "Criar apps/web/src/components/Footer.astro com footer, copyright build-time, sem links (REQ-015)",
+        "Criar apps/web/src/pages/index.astro compondo os 3 componentes no BaseLayout (REQ-007)",
+        "Executar pnpm --filter web check e corrigir erros (REQ-016)",
+        "Executar pnpm --filter web build e verificar ausência de .js em dist/ (REQ-017)"
+      ],
+      "targetFiles": [
+        "apps/web/src/styles/global.css",
+        "apps/web/src/layouts/BaseLayout.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro"
+      ]
+    }
+  ]
+}
