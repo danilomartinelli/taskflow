@@ -4,17 +4,17 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg': '#0a0a0a',
-        'text': '#f5f5f5',
-        'neon': '#00fa62',
-        'surface': '#111111',
-        'border': '#1f1f1f',
-        'muted': '#888888',
+        bg: '#0a0a0a',
+        surface: '#111111',
+        accent: '#00fa62',
+        'text-primary': '#f5f5f5',
+        'text-secondary': '#a3a3a3',
+        border: '#1f1f1f',
       },
       fontFamily: {
-        inter: ['Inter', 'sans-serif'],
-      }
+        sans: ['Inter', 'sans-serif'],
+      },
     },
   },
   plugins: [],
-}
+};
