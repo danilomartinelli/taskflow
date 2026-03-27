@@ -1,23 +1,22 @@
 {
-  "name": "@taskflow/web",
-  "type": "module",
+  "name": "web",
   "version": "0.0.1",
+  "private": true,
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
     "build": "astro check && astro build",
     "preview": "astro preview",
-    "astro": "astro",
-    "check": "astro check",
-    "typecheck": "tsc --noEmit",
-    "test": "vitest"
+    "astro": "astro"
   },
   "dependencies": {
     "@astrojs/tailwind": "^5.1.0",
-    "astro": "^4.5.3",
+    "@fontsource/inter": "^5.0.16",
+    "astro": "^4.4.15",
     "tailwindcss": "^3.4.1"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.5.6"
+    "@astrojs/check": "^0.5.6",
+    "typescript": "^5.4.2"
   }
 }
