@@ -1,0 +1,18 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[CODE-MAP]: O code-map.md já reflete a estrutura planejada para sp-010 em apps/web/ (Hero.astro, Features.astro, Footer.astro, BaseLayout.astro, global.css). O Architect deve referenciar esses caminhos exatos ao criar as tasks para o Stylizer/FrontendSpecialist — sem renomeações.",
+    "[PRD-CONSTRAINT]: REQ-002 proíbe output: 'server' ou 'hybrid' no astro.config.mjs. O adapter @astrojs/cloudflare deve ser usado EXCLUSIVAMENTE com output: 'static' nesta Sprint.",
+    "[PRD-CONSTRAINT]: REQ-005 proíbe qualquer tag <script> com código de aplicação no HTML gerado. Zero JavaScript no cliente é um critério de aceite hard — o Architect deve incluir validação via grep no dist/ ou astro check.",
+    "[PRD-CONSTRAINT]: REQ-004 proíbe bibliotecas de ícones com runtime JS (Lucide React, Heroicons React, etc.). Todos os SVGs devem ser inline hardcoded nos componentes .astro.",
+    "[PRD-CONSTRAINT]: REQ-003 proíbe import de fontes via <link> do Google Fonts. A fonte Inter DEVE ser servida localmente via @fontsource/inter instalado como dependência npm.",
+    "[PRD-CONSTRAINT]: O wrangler.toml em apps/web/ deve existir (name + compatibility_date) mas SEM nenhum binding declarado — a página é 100% estática sem D1/KV/R2/Queues.",
+    "[PRD-CONSTRAINT]: REQ-009 exige que turbo.json na raiz inclua web#build no pipeline. O Architect deve criar uma task explícita para atualizar o turbo.json se ainda não estiver configurado.",
+    "[CLOUDFLARE]: Esta Sprint usa Cloudflare Pages (deploy estático). Nenhum Cloudflare binding é necessário. O Output Directory no painel do Pages deve ser configurado como apps/web/dist.",
+    "[MONOREPO]: O package.json de apps/web deve declarar name: 'web' para filtragem via pnpm --filter web. O Architect deve garantir que todas as tasks de build referenciem pnpm --filter web build.",
+    "[ZERO-SECRETS]: Esta Sprint não requer nenhuma variável de ambiente, API key ou secret externo. O status é ready e canProceed é true sem bloqueios."
+  ],
+  "reuseCandidates": []
+}
