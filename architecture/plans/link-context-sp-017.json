@@ -1,0 +1,19 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[PLATFORM]: Esta sprint é 100% estática — zero bindings Cloudflare (DB, KV, R2, AI) e zero variáveis de ambiente. O Cloudflare Pages serve o output estático de apps/web/dist/ diretamente sem nenhuma configuração de Worker.",
+    "[STACK]: Novo workspace apps/web deve ser criado no monorepo Turborepo. Confirme que o package.json raiz lista 'apps/web' em workspaces antes de criar qualquer arquivo. Use list_directory na raiz para verificar a estrutura atual.",
+    "[TURBO]: O turbo.json raiz DEVE ser atualizado para incluir o pipeline de build do workspace web (REQ-011). Verifique se já existe um pipeline 'build' genérico que cubra todos os workspaces — se sim, nenhuma alteração é necessária; se não, adicione a entrada explícita para 'web'.",
+    "[ASTRO-CONFIG]: NÃO instalar @astrojs/cloudflare adapter. Para output: 'static', o Cloudflare Pages serve os arquivos diretamente sem adapter SSR. Instalar o adapter causaria conflito com a restrição de zero-JS e mode estático (REQ-002, REQ-010).",
+    "[ZERO-JS]: Nenhum componente pode usar diretivas de hidratação (client:load, client:idle, client:visible, client:only). Validar com: grep -r 'client:' apps/web/src — deve retornar vazio. O build final não deve conter arquivos .js em apps/web/dist/_astro/.",
+    "[SVG-INLINE]: Todos os ícones da seção Features DEVEM ser SVG markup inline nos componentes .astro — não usar <img src>, <use href> ou imports de arquivos externos. SVGs inline permitem coloração via CSS currentColor e eliminam requests de rede (REQ-008).",
+    "[FONTSOURCE]: Importar @fontsource/inter/400.css e @fontsource/inter/700.css como imports estáticos no BaseLayout.astro. NÃO usar Google Fonts CDN — a restrição é explícita no PRD (REQ-004). O Astro irá processar e servir as fontes localmente no build.",
+    "[SCROLL-SMOOTH]: Implementar via CSS scroll-behavior: smooth no seletor html{} no stylesheet global OU via classe Tailwind scroll-smooth no elemento <html> no BaseLayout.astro. Sem JavaScript — o CTA é um <a href='#features'> puro (REQ-005, REQ-006).",
+    "[TAILWIND-COLORS]: O tailwind.config.mjs DEVE definir theme.extend.colors com: neon: '#00fa62' e dark: '#0a0a0a'. Também considere adicionar surface: '#111111', border: '#1f1f1f', muted: '#888888' conforme paleta do Apêndice A para consistência entre componentes.",
+    "[DEPLOY-CONFIG]: Configurar no dashboard do Cloudflare Pages (ou pages.toml na raiz): build.command = 'pnpm --filter web build', build.destination = 'apps/web/dist', NODE_VERSION=20, PNPM_VERSION=9. Sem wrangler.toml — Cloudflare Pages não usa wrangler para sites estáticos puros.",
+    "[VALIDATION]: Critérios de aceite da sprint: (1) pnpm --filter web run check retorna zero erros TypeScript; (2) pnpm --filter web run build gera apps/web/dist/index.html sem arquivos .js em _astro/; (3) URL *.pages.dev retorna HTTP 200. SEM testes unitários (Vitest) nesta sprint conforme Sprint Goal."
+  ],
+  "reuseCandidates": []
+}
