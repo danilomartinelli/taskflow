@@ -1,0 +1,19 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[CONTEXT]: Sprint SP-005 cria apps/web/ como novo workspace pnpm no Turborepo. O code-map não registra workspaces ainda — este será o primeiro. Certifique-se de que pnpm-workspace.yaml inclui 'apps/*' e 'packages/*'.",
+    "[CONTEXT]: O turbo.json raiz já possui task 'build' com outputs ['dist/**'] — o novo workspace apps/web será detectado automaticamente pelo Turborepo via pnpm workspaces sem alterações no turbo.json.",
+    "[CONTEXT]: Stack exclusiva desta sprint: Astro (output: 'static') + @astrojs/tailwind + @fontsource/inter. Zero adapters de framework (NÃO usar @astrojs/cloudflare — output estático puro não precisa).",
+    "[CONTEXT]: Deploy via CLI imperativo: 'wrangler pages deploy dist/' a partir de apps/web/. NÃO criar wrangler.toml nesta sprint.",
+    "[CONSTRAINT]: REQ-007 (Zero JS no cliente) é regra hard. Proibido qualquer diretiva client:* em componentes Astro. Se astro build gerar arquivos em _astro/*.js, investigar e remover a causa antes de considerar a sprint concluída.",
+    "[CONSTRAINT]: SVGs dos 3 feature cards devem ser inline no HTML (não <img src>). Tamanho canônico: width='24' height='24' viewBox='0 0 24 24'. Isso permite estilização via CSS sem requests externos.",
+    "[CONSTRAINT]: @fontsource/inter deve ser importado via import CSS padrão no BaseLayout.astro (import '@fontsource/inter/400.css'). NÃO usar Google Fonts CDN — viola zero dependências externas em runtime.",
+    "[CONSTRAINT]: tailwind.config.ts deve incluir './src/**/*.{astro,html,ts,tsx}' no campo content para evitar purge indevido de classes em templates .astro.",
+    "[DESIGN-TOKENS]: Tokens canônicos obrigatórios — background: '#0a0a0a', accent: '#00fa62', fontFamily.sans: ['Inter', 'sans-serif']. Usar classes bg-background e text-accent nos componentes.",
+    "[STRUCTURE]: Componentes devem viver em apps/web/src/components/ (Hero.astro, Features.astro, Footer.astro). NÃO criar packages/ui nesta sprint — escopo futuro conforme Non-Goals.",
+    "[GATE]: O script build em apps/web/package.json executa 'astro check && astro build' em sequência. astro check é o único gate de qualidade desta sprint (substitui testes unitários). Build não ocorre se astro check falhar."
+  ],
+  "reuseCandidates": []
+}
