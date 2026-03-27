@@ -1,0 +1,69 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Setup do Workspace Astro com Design System e Componentes da Landing Page",
+      "description": "Como frontend_specialist, eu quero criar o workspace apps/web completo com Astro (output: static), TailwindCSS, @fontsource/inter, todos os componentes da landing page (Hero, Features, FeatureCard, Footer, Layout), e o wrangler.toml para deploy no Cloudflare Pages. Esta task cobre US-001 ao US-006 de forma incremental e atômica.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "pnpm --filter web build executa sem erros e gera apps/web/dist/ com arquivos HTML estáticos",
+        "pnpm --filter web exec astro check retorna zero erros de tipo",
+        "apps/web/package.json contém name '@taskflow/web' e scripts dev, build e check",
+        "turbo.json raiz inclui pipeline build com dependsOn ['^build'] e outputs ['dist/**']",
+        "astro.config.mjs contém output: 'static' e integração @astrojs/tailwind",
+        "tailwind.config.mjs define content './src/**/*.{astro,html,js,ts}', cores neon #00fa62 e base #0a0a0a em theme.extend.colors",
+        "@fontsource/inter instalado em apps/web e importado no global.css",
+        "Hero exibe h1 com 'Organize. Colabore. Entregue.' e subtítulo correto",
+        "CTA é elemento <a href='#features'> sem JavaScript — nunca <button>",
+        "Seção features possui id='features' e exibe 3 cards com títulos: Organize Tarefas, Colabore em Tempo Real, Meça o Progresso",
+        "Cada card possui SVG inline único e semanticamente relacionado — sem bibliotecas de ícones externas",
+        "Cards usam grid grid-cols-1 md:grid-cols-3 gap-8 para responsividade",
+        "Footer exibe ano gerado via new Date().getFullYear() no frontmatter do componente Astro (build-time)",
+        "global.css contém html { scroll-behavior: smooth; }",
+        "apps/web/wrangler.toml existe com name = 'taskflow-web' e pages_build_output_dir = 'dist'",
+        "dist/index.html não contém script tags de hidratação de framework (zero JS no cliente)",
+        "pnpm-workspace.yaml inclui 'apps/*' no array de workspaces",
+        "apps/web/.gitignore inclui dist/, .astro/ e node_modules/",
+        "Layout.astro aceita props title e description com meta viewport e meta description no head",
+        "Typecheck passa"
+      ],
+      "subtasks": [
+        "Verificar se pnpm-workspace.yaml já inclui 'apps/*' — adicionar se não incluir",
+        "Criar apps/web/package.json com name '@taskflow/web', scripts dev/build/check e dependências astro, @astrojs/tailwind, tailwindcss, @fontsource/inter",
+        "Criar apps/web/astro.config.mjs com output: 'static' e integração tailwind",
+        "Criar apps/web/tailwind.config.mjs com content, cores neon/base e fontFamily Inter",
+        "Criar apps/web/tsconfig.json estendendo astro/tsconfigs/strict",
+        "Criar apps/web/src/styles/global.css com imports @fontsource/inter 400/600/700, diretivas tailwind e html { scroll-behavior: smooth; }",
+        "Criar apps/web/src/layouts/Layout.astro com head completo (viewport, description, title), body com bg-base e slot",
+        "Criar apps/web/src/components/Hero.astro com h1, subtítulo e âncora CTA para #features",
+        "Criar apps/web/src/components/FeatureCard.astro com props icon, title, description e SVG inline slot",
+        "Criar apps/web/src/components/Features.astro com id='features' e grid de 3 FeatureCard com SVGs inline distintos",
+        "Criar apps/web/src/components/Footer.astro com ano build-time via new Date().getFullYear() no frontmatter",
+        "Criar apps/web/src/pages/index.astro importando Layout, Hero, Features e Footer",
+        "Criar apps/web/wrangler.toml com name='taskflow-web' e pages_build_output_dir='dist'",
+        "Criar apps/web/.gitignore com dist/, .astro/ e node_modules/",
+        "Atualizar turbo.json raiz adicionando pipeline build com dependsOn ['^build'] e outputs ['dist/**'] — mesclar sem sobrescrever pipelines existentes",
+        "Executar pnpm --filter web exec astro check e resolver todos os erros antes de prosseguir",
+        "Executar pnpm --filter web build e confirmar geração de dist/index.html sem script tags de hidratação"
+      ],
+      "targetFiles": [
+        "pnpm-workspace.yaml",
+        "turbo.json",
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "apps/web/wrangler.toml",
+        "apps/web/.gitignore",
+        "apps/web/src/styles/global.css",
+        "apps/web/src/layouts/Layout.astro",
+        "apps/web/src/pages/index.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/FeatureCard.astro",
+        "apps/web/src/components/Footer.astro"
+      ]
+    }
+  ]
+}
