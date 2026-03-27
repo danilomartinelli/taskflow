@@ -1,0 +1,19 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[PRD-CONTEXT]: Sprint sp-014 — Landing page estática TaskFlow. Stack: Astro + TailwindCSS + @fontsource/inter. Deploy no Cloudflare Pages. Zero JavaScript no cliente obrigatório (output: 'static')",
+    "[PRD-CONTEXT]: Workspace name deve ser exatamente '@taskflow/web' em apps/web/package.json para que o filtro pnpm --filter @taskflow/web funcione corretamente (ver CE-005).",
+    "[PRD-CONTEXT]: astro.config.mjs DEVE ter output: 'static' explicitamente configurado. Nenhuma diretiva client:* é permitida — violaria REQ-017 (zero arquivos .js no dist/).",
+    "[PRD-CONTEXT]: Fonte Inter via @fontsource/inter (npm), NUNCA via Google Fonts CDN (R-003). Importar @fontsource/inter/400.css e @fontsource/inter/700.css no <head> do Layout.astro. Pacote deve estar em dependencies (não devDependencies) conforme CE-003.",
+    "[PRD-CONTEXT]: Scroll suave para #features deve ser implementado APENAS via CSS (scroll-behavior: smooth no seletor html). O CTA deve ser tag <a href='#features'>, nunca <button> (REQ-009, R-005).",
+    "[PRD-CONTEXT]: Todos os SVGs de ícones devem ser inline nos arquivos .astro — proibido usar <img src='icon.svg'> ou libs como lucide-react (R-004). Feature 1: checkbox/lista; Feature 2: user-group; Feature 3: target/crosshair.",
+    "[PRD-CONTEXT]: turbo.json deve ter pipeline 'check' configurado para suportar turbo run check executando astro check. Verificar se já existe antes de modificar.",
+    "[PRD-CONTEXT]: Estrutura esperada em apps/web/: package.json, astro.config.mjs, tailwind.config.mjs, tsconfig.json (extends astro/tsconfigs/strict), public/favicon.svg, src/layouts/Layout.astro, src/pages/index.astro, src/components/{Hero,Features,Footer}.astro.",
+    "[PRD-CONTEXT]: DoD Gate crítico — após build, ls apps/web/dist/_astro/*.js deve retornar vazio. Se houver qualquer .js no output, a sprint falha no Gate 1.",
+    "[PRD-CONTEXT]: Configuração Cloudflare Pages — build command: 'pnpm --filter @taskflow/web build', output dir: 'apps/web/dist', root: '/', Node.js: 20.x (NODE_VERSION=20 nas env vars do painel).",
+    "[NO-SECRETS]: PRD confirma explicitamente zero APIs externas, zero bindings Cloudflare, zero variáveis de ambiente nesta sprint. Sprint é 100% estática sem configuração de infraestrutura."
+  ],
+  "reuseCandidates": []
+}
