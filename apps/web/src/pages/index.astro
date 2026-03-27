@@ -1,14 +1,14 @@
 ---
-import Base from "../layouts/Base.astro";
-import Hero from "../components/Hero.astro";
-import Features from "../components/Features.astro";
-import Footer from "../components/Footer.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Base title="TaskFlow - Organize suas tarefas." description="A ferramenta definitiva para produtividade e colaboração.">
-  <main>
+<BaseLayout title="Project Management" description="Software de gestão de projetos moderno e eficiente.">
+  <main class="bg-bg text-white">
     <Hero />
     <Features />
+    <Footer />
   </main>
-  <Footer />
-</Base>
+</BaseLayout>
