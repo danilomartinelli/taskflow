@@ -1,0 +1,77 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Scaffold do Workspace Astro em apps/web com TailwindCSS e Turborepo",
+      "description": "Como frontend_specialist, eu quero criar o workspace apps/web do zero com Astro configurado em modo static, TailwindCSS integrado via @astrojs/tailwind, e o turbo.json na raiz do monorepo atualizado com o pipeline de build, para que pnpm --filter web build funcione corretamente.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "pnpm --filter web build executa sem erros e gera apps/web/dist/",
+        "O output dist/ não contém nenhum arquivo .js referenciado via <script src> nas páginas geradas (zero JS cliente)",
+        "Classes TailwindCSS estão presentes e resolvidas no HTML de saída em dist/index.html",
+        "pnpm build na raiz do monorepo resolve o workspace web via pipeline do turbo.json",
+        "astro.config.mjs possui output: 'static' e integrations: [tailwind()] — conforme REQ-002 e REQ-003",
+        "package.json do workspace tem name: 'web' (não @taskflow/web nem taskflow-web) para compatibilidade com pnpm --filter web",
+        "wrangler.toml em apps/web contém pages_build_output_dir = 'dist' — conforme REQ-006",
+        "turbo.json na raiz existe com pipeline build contendo dependsOn: ['^build'] — se já existia, entradas anteriores preservadas",
+        "Typecheck passa"
+      ],
+      "subtasks": [
+        "Criar apps/web/package.json com name: 'web', scripts dev/build/preview, e dependências astro ^4.0.0 + @astrojs/tailwind ^5.0.0 + tailwindcss ^3.4.0",
+        "Criar apps/web/astro.config.mjs com output: 'static' e integrations: [tailwind()]",
+        "Criar apps/web/tailwind.config.mjs com content apontando para ./src/**/*.{astro,html,ts,tsx}",
+        "Verificar se turbo.json existe na raiz via list_directory; se não existir criar com schema https://turbo.build/schema.json e pipeline build/dev; se existir adicionar entradas sem remover as existentes",
+        "Criar apps/web/wrangler.toml com name = 'taskflow-web' e pages_build_output_dir = 'dist'",
+        "Criar public/favicon.svg placeholder em apps/web/public/"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/wrangler.toml",
+        "apps/web/public/favicon.svg",
+        "turbo.json"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Implementar Componentes Astro e Página index da Landing Page TaskFlow",
+      "description": "Como frontend_specialist, eu quero criar todos os componentes Astro (BaseLayout, Hero, FeatureCard, Features, Footer) e a página index.astro compondo-os, com SVGs inline, HTML semântico, TailwindCSS e zero diretivas client:*, para que a landing page renderize corretamente como HTML estático.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [
+        "T1"
+      ],
+      "acceptanceCriteria": [
+        "O <h1> contém o título principal e existe um <a href='#features'> visível acima da dobra no Hero — conforme US-002",
+        "Existem exatamente 3 instâncias de FeatureCard renderizadas no DOM com title e description não-vazios — conforme US-003",
+        "Cada FeatureCard contém um <svg> diretamente no HTML (sem <img src='*.svg'> e sem <use href>) — conforme REQ-005",
+        "A seção Features possui id='features' para servir como âncora do CTA — conforme REQ-007 e ARCH note",
+        "O footer contém ao menos 4 links <a> com texto visível e texto de copyright com ano 2025 usando elemento <footer> semântico — conforme US-004",
+        "BaseLayout inclui meta tags: charset, viewport, description, <title> — conforme REQ-008",
+        "Nenhum componente usa diretivas client:load, client:idle, client:visible, client:only — conforme REQ-004 e ARCH note",
+        "Layout não quebra em viewport mobile (375px) nem desktop (1280px) — mobile-first com breakpoints Tailwind sm/md/lg — conforme REQ-010",
+        "HTML semântico: <header>, <main>, <section id='features'>, <footer>, <h1> único por página — conforme REQ-009",
+        "Typecheck passa com tsconfig estendendo astro/tsconfigs/strict"
+      ],
+      "subtasks": [
+        "Criar apps/web/src/layouts/BaseLayout.astro com Props (title?, description?), meta tags obrigatórias (charset, viewport, description, title, favicon) e slot",
+        "Criar apps/web/src/components/Hero.astro com <header>, <h1> com título, parágrafo subtítulo e <a href='#features'>Começar agora</a> — sem props, conteúdo hardcoded, zero scripts",
+        "Criar apps/web/src/components/FeatureCard.astro com Props (title: string, description: string) e <slot /> para SVG inline — estrutura de card com flex e classes Tailwind",
+        "Criar apps/web/src/components/Features.astro com <section id='features'> contendo 3 FeatureCard com SVGs inline: checklist (Tarefas Inteligentes), users (Colaboração em Tempo Real), chart (Relatórios Visuais)",
+        "Criar apps/web/src/components/Footer.astro com <footer> semântico, nav com 4 links (Produto, Empresa, Termos de Uso, Privacidade com href='#') e copyright © 2025 TaskFlow",
+        "Criar apps/web/src/pages/index.astro importando BaseLayout + Hero + Features + Footer, compondo a página com <main> envolvendo Hero e Features",
+        "Criar apps/web/tsconfig.json estendendo astro/tsconfigs/strict"
+      ],
+      "targetFiles": [
+        "apps/web/src/layouts/BaseLayout.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/FeatureCard.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro",
+        "apps/web/tsconfig.json"
+      ]
+    }
+  ]
+}
