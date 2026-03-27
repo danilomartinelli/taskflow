@@ -1,0 +1,26 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[IDENTITY]: Projeto identificado como 'TaskFlow Web' — landing page estática para o produto TaskFlow, usando Astro + TailwindCSS no workspace apps/web do monorepo Turborepo.",
+    "[SCOPE]: Sprint 100% estática — zero Workers, zero D1/R2/KV/AI bindings, zero variáveis de ambiente. Deploy via Cloudflare Pages (não Workers). Nenhum secret necessário.",
+    "[CLOUDFLARE-PAGES]: O deploy usa 'wrangler pages deploy' com wrangler.toml contendo pages_build_output_dir='dist'. Isso é hospedagem estática — não requer wrangler.jsonc nem bindings de Worker.",
+    "[TURBO]: O turbo.json raiz DEVE ser atualizado para incluir pipeline 'build' com dependsOn: ['^build'] e outputs: ['dist/**']. O Architect deve verificar se turbo.json já existe e adicionar/mesclar o pipeline — não sobrescrever pipelines existentes.",
+    "[ASTRO-STATIC]: Configurar obrigatoriamente output: 'static' no astro.config.mjs. Nunca 'server' ou 'hybrid'. Isso garante zero runtime no Cloudflare Pages.",
+    "[ZERO-JS]: O PRD exige zero JavaScript de cliente. Não usar diretivas client:* do Astro (client:load, client:idle, etc.). Todos os componentes devem ser .astro puro — sem React, Preact ou qualquer framework hidratado.",
+    "[FONTSOURCE]: Usar @fontsource/inter instalado localmente via 'pnpm add --filter web @fontsource/inter'. NÃO usar Google Fonts CDN — viola requisito de zero requests externos e privacidade.",
+    "[SVGS-INLINE]: Os 3 SVGs dos feature cards DEVEM ser escritos inline no markup Astro. Não instalar lucide-react, @heroicons/react ou similares — o PRD proíbe explicitamente pacotes de ícones externos.",
+    "[WORKSPACE-FILTER]: Todas as instalações de dependências DEVEM usar flag --filter web. Ex: 'pnpm add --filter web astro @astrojs/tailwind tailwindcss @fontsource/inter'. Nunca instalar na raiz do monorepo.",
+    "[PNPM-WORKSPACE]: Verificar se pnpm-workspace.yaml já inclui 'apps/*'. Se não incluir, adicionar. Sem isso, o workspace apps/web não será reconhecido pelo Turborepo.",
+    "[ASTRO-CHECK]: O PRD especifica que astro check deve retornar zero erros antes de prosseguir para astro build. O Architect deve definir a task de CI nessa ordem: check → build → deploy.",
+    "[WRANGLER-TOML]: Usar wrangler.toml (não wrangler.jsonc) para Cloudflare Pages. O formato correto é TOML com name='taskflow-web' e pages_build_output_dir='dist'.",
+    "[ANO-BUILD-TIME]: O footer deve usar new Date().getFullYear() no frontmatter do componente Astro (entre os --- delimitadores), não no template. Isso garante que o ano é computado em build-time, não hardcoded.",
+    "[SCROLL-SMOOTH]: Implementar via CSS puro: html { scroll-behavior: smooth; } no global.css. O botão CTA deve ser um elemento <a href='#features'> nativo — nunca <button> com event listener.",
+    "[TAILWIND-CONFIG]: O tailwind.config.mjs DEVE definir content apontando para './src/**/*.{astro,html,js,ts}' para que o Tailwind faça tree-shaking correto dos estilos usados nos arquivos .astro.",
+    "[COMPONENT-STRUCTURE]: Organizar componentes em apps/web/src/components/: Hero.astro, Features.astro, FeatureCard.astro, Footer.astro. O index.astro apenas importa e compõe. Layout base em src/layouts/Layout.astro.",
+    "[META-TAGS]: O <head> deve incluir viewport meta tag e description meta tag com conteúdo do produto. O Layout.astro deve aceitar props title e description com valor padrão.",
+    "[GITIGNORE]: Criar apps/web/.gitignore com dist/, .astro/ e node_modules/ para evitar commitar artefatos de build."
+  ],
+  "reuseCandidates": []
+}
