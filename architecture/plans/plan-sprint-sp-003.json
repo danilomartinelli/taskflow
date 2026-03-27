@@ -1,0 +1,79 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Criar workspace apps/web com Astro 4 + TailwindCSS + configurações base",
+      "description": "Como frontend_specialist, eu quero criar o workspace apps/web do zero com todos os arquivos de configuração necessários: package.json, astro.config.ts, tsconfig.json, wrangler.toml, tailwind.config.ts, e atualizar turbo.json na raiz para incluir as tasks build/typecheck/dev.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "pnpm --filter web build executa sem erros a partir da raiz do monorepo",
+        "pnpm --filter web typecheck (tsc --noEmit) retorna zero erros",
+        "pnpm-workspace.yaml inclui apps/* e o pacote web aparece em pnpm list -r",
+        "turbo.json na raiz define tasks build (outputs: dist/**), typecheck e dev sem remover tasks existentes",
+        "astro.config.ts usa output: 'static' obrigatoriamente — PROIBIDO output: 'server' ou 'hybrid'",
+        "tailwind.config.ts usa theme.extend com os design tokens: background #0a0a0a, surface #111111, accent #00fa62, accent-hover #00d452, text-primary #ffffff, text-secondary #a1a1aa, text-muted #52525b, fontFamily sans Inter",
+        "wrangler.toml contém name = 'taskflow-web' e pages_build_output_dir = 'dist'",
+        "Typecheck passa sem erros"
+      ],
+      "subtasks": [
+        "Criar apps/web/package.json com dependências: astro ^4.x, @astrojs/tailwind ^5.x, tailwindcss ^3.x, @fontsource/inter ^5.x e scripts dev/build/preview/typecheck",
+        "Criar apps/web/astro.config.ts com output: 'static' e integração tailwind()",
+        "Criar apps/web/tsconfig.json estendendo astro/tsconfigs/strict com paths @/* -> src/*",
+        "Criar apps/web/tailwind.config.ts com theme.extend contendo os design tokens do PRD",
+        "Criar apps/web/wrangler.toml com name=taskflow-web e pages_build_output_dir=dist",
+        "Atualizar turbo.json na raiz adicionando tasks build/typecheck/dev (se já existir, apenas adicionar sem sobrescrever)"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.ts",
+        "apps/web/tsconfig.json",
+        "apps/web/tailwind.config.ts",
+        "apps/web/wrangler.toml",
+        "turbo.json"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Implementar landing page completa: BaseLayout + Hero + Features + Footer + index.astro",
+      "description": "Como frontend_specialist, eu quero criar todos os componentes Astro da landing page (BaseLayout, Hero, Features, Footer) e a página index.astro compondo-os, garantindo zero JavaScript no cliente, fonte Inter via @fontsource, SVGs inline acessíveis e deploy-ready para Cloudflare Pages.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [
+        "T1"
+      ],
+      "acceptanceCriteria": [
+        "BaseLayout.astro importa @fontsource/inter apenas nos pesos 400, 500, 600, 700 — zero requisições a fonts.googleapis.com",
+        "html tag tem lang='en' e class='bg-background text-text-primary'; body tem class='font-sans antialiased'",
+        "Meta tags obrigatórias presentes: charset, viewport, title, description",
+        "Hero.astro renderiza h1 com tagline, p com subtítulo, e <a href='#features'> estilizado como CTA com bg-accent (#00fa62) texto text-background (#0a0a0a) e hover bg-accent-hover (#00d452)",
+        "Features.astro renderiza exatamente 3 cards com id='features' no container pai, cada card com SVG inline aria-hidden='true', h3 e parágrafo descritivo",
+        "Grid features: grid-cols-1 em mobile (< 768px), lg:grid-cols-3 em desktop (>= 1024px)",
+        "Footer.astro exibe apenas copyright com new Date().getFullYear(), texto text-secondary (#a1a1aa), sem links ou componentes interativos",
+        "index.astro compõe Hero → Features → Footer dentro de BaseLayout na ordem correta",
+        "ZERO uso de diretivas client:* em qualquer componente",
+        "ZERO imports de React, Vue ou Svelte",
+        "ZERO tags <script> no HTML final",
+        "dist/_astro/ não contém arquivos .js após astro build",
+        "Typecheck passa sem erros",
+        "astro build executa sem warnings críticos",
+        "favicon.svg presente em apps/web/public/favicon.svg para evitar 404"
+      ],
+      "subtasks": [
+        "Criar apps/web/src/layouts/BaseLayout.astro com imports @fontsource/inter/400.css, 500.css, 600.css, 700.css, meta tags obrigatórias e slot",
+        "Criar apps/web/src/components/Hero.astro com h1, p subtítulo e <a href='#features'> CTA conforme REQ-005",
+        "Criar apps/web/src/components/Features.astro com array de 3 features, SVGs inline aria-hidden, set:html para ícones, grid responsivo conforme REQ-006",
+        "Criar apps/web/src/components/Footer.astro com copyright dinâmico via new Date().getFullYear() conforme REQ-007",
+        "Criar apps/web/src/pages/index.astro compondo BaseLayout + Hero + Features + Footer conforme REQ-008",
+        "Criar apps/web/public/favicon.svg placeholder para evitar 404 no build"
+      ],
+      "targetFiles": [
+        "apps/web/src/layouts/BaseLayout.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro",
+        "apps/web/public/favicon.svg"
+      ]
+    }
+  ]
+}
