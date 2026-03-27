@@ -1,0 +1,75 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Setup Workspace Astro + Tailwind Config no Monorepo",
+      "description": "Criar o workspace apps/web com package.json, astro.config.mjs, tailwind.config.mjs (com tokens de design obrigatórios), tsconfig.json e wrangler.toml. Atualizar turbo.json raiz para incluir o pipeline do workspace web.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "apps/web/package.json existe com name '@taskflow/web', scripts dev/build/preview/check, astro ^4.x, @astrojs/tailwind ^5.x, tailwindcss ^3.x",
+        "astro.config.mjs define output: 'static' e integrations: [tailwind()] — sem @astrojs/react ou qualquer diretiva client:*",
+        "tailwind.config.mjs define tokens obrigatórios: bg=#0a0a0a, text=#f5f5f5, neon=#00fa62, surface=#111111, border=#1f1f1f, muted (cor de texto secundária), font-family Inter",
+        "wrangler.toml em apps/web/ define name='taskflow-web' e pages_build_output_dir='dist'",
+        "turbo.json raiz inclui tasks build (outputs: dist/**, .astro/**), dev (cache: false, persistent: true) e check (dependsOn: ^build)",
+        "Typecheck passa (astro check sem erros)"
+      ],
+      "subtasks": [
+        "Verificar se apps/web/ já existe via list_directory na raiz",
+        "Criar apps/web/package.json com dependências conforme REQ-001",
+        "Criar apps/web/astro.config.mjs com output: 'static' e integração tailwind",
+        "Criar apps/web/tailwind.config.mjs com todos os tokens de design (bg, text, neon, surface, border, muted)",
+        "Criar apps/web/tsconfig.json estendendo configuração base do monorepo",
+        "Criar apps/web/wrangler.toml com name e pages_build_output_dir",
+        "Ler turbo.json raiz e atualizar/criar com pipeline web conforme REQ-010"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "apps/web/wrangler.toml",
+        "turbo.json"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Implementar Layout Base, Componentes e Página Index",
+      "description": "Criar src/layouts/Base.astro com meta tags SEO e estilos globais, todos os componentes (Hero.astro, FeatureCard.astro, Features.astro, Footer.astro) e a página src/pages/index.astro montando a landing page completa. Validar que pnpm --filter @taskflow/web build gera dist/ sem nenhum arquivo .js de aplicação.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [
+        "T1"
+      ],
+      "acceptanceCriteria": [
+        "Base.astro injeta Google Fonts Inter via <link> no <head>, define scroll-behavior: smooth no html, background-color: #0a0a0a e color: #f5f5f5 no body, font-family Inter globalmente — conforme REQ-003",
+        "Hero.astro renderiza H1 'Organize suas tarefas, simplifique sua vida' com text-4xl md:text-6xl font-bold, subtítulo com text-muted, e CTA <a href='#features'> com bg-neon text-bg — sem nenhum event listener JS — conforme US-001",
+        "Features.astro contém <section id='features'> com grid grid-cols-1 md:grid-cols-3 gap-6 e 3 FeatureCards com SVGs inline (não <img src>) conforme REQ-006",
+        "Cada FeatureCard recebe title, description e ícone SVG via <slot name='icon'> — SVG usa stroke='currentColor' e o container pai tem class text-neon — conforme REQ-005",
+        "Footer.astro contém links <a href='/privacidade'>, <a href='/termos'>, <a href='mailto:contato@taskflow.sh'> e texto '© 2026 TaskFlow. Todos os direitos reservados.' — conforme REQ-007 e US-003",
+        "index.astro compõe Base > main(Hero + Features) + Footer conforme REQ-008",
+        "pnpm --filter @taskflow/web build conclui sem erros — conforme US-004",
+        "dist/ gerado não contém arquivos .js de aplicação (Zero JS) — conforme US-004 e NG-3",
+        "Em viewport 375px, H1 não está truncado e botão CTA está totalmente visível — conforme US-001",
+        "Cards de features com background #111111 (bg-surface), border #1f1f1f (border-border), border-radius 12px (rounded-xl), padding 24px (p-6) — conforme US-002",
+        "Typecheck passa (astro check sem erros)"
+      ],
+      "subtasks": [
+        "Criar apps/web/src/layouts/Base.astro com meta tags SEO, Google Fonts, estilos globais html/body e <style is:global>",
+        "Criar apps/web/src/components/Hero.astro com H1, subtítulo e CTA âncora #features",
+        "Criar apps/web/src/components/FeatureCard.astro com props title/description e <slot name='icon'>",
+        "Criar apps/web/src/components/Features.astro com section id='features', grid e 3 FeatureCards com SVGs inline de Kanban, Deadline e Team Sync",
+        "Criar apps/web/src/components/Footer.astro com logo, nav links e copyright",
+        "Criar apps/web/src/pages/index.astro compondo todos os componentes",
+        "Rodar pnpm --filter @taskflow/web build e verificar que dist/ não contém .js de aplicação"
+      ],
+      "targetFiles": [
+        "apps/web/src/layouts/Base.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/FeatureCard.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro"
+      ]
+    }
+  ]
+}
