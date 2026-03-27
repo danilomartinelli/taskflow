@@ -2,7 +2,19 @@
   "$schema": "https://turborepo.org/schema.json",
   "pipeline": {
     "build": {
-      "outputs": ["dist/**", ".astro/**"]
+      "outputs": ["dist/**", ".astro/**"],
+      "dependsOn": ["^build"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true,
+      "dependsOn": ["^dev"]
+    },
+    "check": {
+      "dependsOn": ["^check"]
     },
     "dev": {
       "cache": false,

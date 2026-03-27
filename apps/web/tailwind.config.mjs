@@ -4,16 +4,12 @@ export default {
   theme: {
     extend: {
       colors: {
-        'bg': '#0a0a0a',
-        'text': '#f5f5f5',
-        'neon': '#00fa62',
-        'surface': '#111111',
-        'border': '#1f1f1f',
-        'muted': '#888888',
+        'neon-green': '#00fa62',
+        'dark-bg': '#0a0a0a',
       },
       fontFamily: {
         inter: ['Inter', 'sans-serif'],
-      }
+      },
     },
   },
   plugins: [],
