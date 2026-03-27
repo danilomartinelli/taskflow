@@ -1,0 +1,51 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Scaffold apps/web — workspace Astro + Tailwind + Inter",
+      "description": "Criar o workspace apps/web/ completo: package.json com scripts Turborepo, astro.config.ts (output:static + @astrojs/tailwind), tailwind.config.ts com design tokens canônicos, pnpm-workspace.yaml atualizado, BaseLayout.astro com @fontsource/inter, favicon.svg e index.astro montando Hero + Features + Footer.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "apps/web/package.json declara name '@taskflow/web' e scripts: dev='astro dev', build='astro check && astro build', preview='astro preview', check='astro check'",
+        "pnpm-workspace.yaml inclui 'apps/*' e 'packages/*'",
+        "astro.config.ts define output:'static' e integração @astrojs/tailwind",
+        "tailwind.config.ts inclui content:'./src/**/*.{astro,html,ts,tsx}' e tokens: colors.background='#0a0a0a', colors.accent='#00fa62', fontFamily.sans=['Inter','sans-serif']",
+        "BaseLayout.astro importa @fontsource/inter/400.css e @fontsource/inter/600.css, define scroll-behavior:smooth no <html> via <style is:global>, inclui charset/viewport/title/favicon",
+        "Hero.astro renderiza <h1>TaskFlow</h1>, parágrafo com subtítulo, <a href='#features'> estilizado com bg-accent e texto #0a0a0a",
+        "Features.astro renderiza <section id='features'> com grid grid-cols-1 lg:grid-cols-3 gap-8 e exatamente 3 cards com SVG inline (24x24 viewBox 0 0 24 24), título e parágrafo hardcoded",
+        "Footer.astro renderiza <footer> com texto '© 2025 TaskFlow. Todos os direitos reservados.' centralizado e text-gray-500",
+        "index.astro compõe BaseLayout + Hero + Features + Footer sem nenhuma diretiva client:*",
+        "astro check retorna código 0",
+        "astro build gera dist/index.html sem nenhuma tag <script> com código de comportamento",
+        "dist/index.html contém <h1>TaskFlow</h1>, href='#features', id='features', <footer>",
+        "Nenhum arquivo .js gerado em dist/_astro/ (zero JS no cliente — REQ-007)",
+        "public/favicon.svg existe com ícone minimalista na cor #00fa62"
+      ],
+      "subtasks": [
+        "1. Atualizar pnpm-workspace.yaml para incluir 'apps/*' e 'packages/*'",
+        "2. Criar apps/web/package.json com name, scripts e dependências (astro, @astrojs/tailwind, tailwindcss, @fontsource/inter)",
+        "3. Criar apps/web/astro.config.ts com output:'static' e integração tailwind",
+        "4. Criar apps/web/tailwind.config.ts com design tokens canônicos (background, accent, fontFamily.sans)",
+        "5. Criar apps/web/public/favicon.svg com ícone 'T' em #00fa62",
+        "6. Criar apps/web/src/layouts/BaseLayout.astro com imports @fontsource/inter, scroll-behavior:smooth, meta tags e slot",
+        "7. Criar apps/web/src/components/Hero.astro com h1, subtítulo e CTA button",
+        "8. Criar apps/web/src/components/Features.astro com section#features, grid 3 colunas e 3 cards com SVG inline",
+        "9. Criar apps/web/src/components/Footer.astro com copyright centralizado",
+        "10. Criar apps/web/src/pages/index.astro compondo todos os componentes via BaseLayout"
+      ],
+      "targetFiles": [
+        "pnpm-workspace.yaml",
+        "apps/web/package.json",
+        "apps/web/astro.config.ts",
+        "apps/web/tailwind.config.ts",
+        "apps/web/public/favicon.svg",
+        "apps/web/src/layouts/BaseLayout.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro"
+      ]
+    }
+  ]
+}
