@@ -1,0 +1,21 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[IDENTITY]: Projeto identificado como 'TaskFlow' — landing page estática para o produto de gerenciamento de tarefas TaskFlow. Atualizar project_identity no system-rules.md com projectName='TaskFlow Landing Page' e projectDescription='Landing page estática para o TaskFlow, construída com Astro + TailwindCSS e hospedada no Cloudflare Pages.'",
+    "[SCOPE]: Sprint sp-008 é 100% estática. Nenhum binding Cloudflare (D1, R2, KV, AI, Queue) é utilizado. Nenhuma API externa. Nenhuma variável de ambiente necessária. O build deve completar sem qualquer env var configurada.",
+    "[WORKSPACE]: Criar novo workspace apps/web com package.json nome '@taskflow/web'. Verificar se pnpm-workspace.yaml já inclui 'apps/*' — se sim, o workspace será detectado automaticamente pelo Turborepo sem alterações no turbo.json raiz.",
+    "[ASTRO CONFIG]: Usar output: 'static' explicitamente no astro.config.mjs. NÃO instalar @astrojs/cloudflare — esse adapter é para SSR/Workers e quebraria o output estático. A integração correta é apenas @astrojs/tailwind.",
+    "[ZERO JS]: Astro não injeta JS em páginas sem diretivas client:*. Proibido usar client:load, client:idle, client:visible ou tags <script> no template. O build final em dist/ não deve conter nenhum arquivo .js referenciado no HTML.",
+    "[FONTES]: Inter deve ser importada via '@fontsource/inter' no BaseLayout.astro (import CSS), NÃO via link CDN do Google Fonts. Isso garante zero requests externos e conformidade com privacidade.",
+    "[SVG INLINE]: Os três ícones (check-circle, users, zap) devem ser definidos diretamente nos templates .astro como SVG inline — NÃO via <img src>, <use href> ou fetch. Verificável via view-source da página final.",
+    "[TAILWIND TOKENS]: Os tokens de cor devem ser configurados no tailwind.config.mjs como extensões: bg '#0a0a0a', surface '#111111', neon '#00fa62', muted '#6b7280'. A classe bg-bg no <body> e text-neon nos ícones dependem dessa configuração.",
+    "[SCROLL SMOOTH]: Implementar scroll suave via CSS puro: class='scroll-smooth' no elemento <html>. O botão CTA deve ser <a href='#features'> — NUNCA um <button> com event listener JavaScript.",
+    "[ANCORA]: A seção de features DEVE ter id='features' para que a âncora do Hero CTA funcione. Verificar que o id está no elemento pai correto em Features.astro.",
+    "[DOD GATES]: Validação apenas via 'astro check' (zero erros de tipo/template) e 'astro build' (zero erros e warnings). Sem testes unitários (Vitest) ou E2E (Playwright) nesta sprint — explicitamente excluídos do Sprint Goal.",
+    "[CLOUDFLARE PAGES]: Configurar no dashboard: Framework preset=Astro, Build command='pnpm --filter @taskflow/web build', Build output directory='apps/web/dist', Root directory='/' (raiz do monorepo), Node.js version=20. Nenhuma variável de ambiente necessária no painel do Pages.",
+    "[FINDINGS]: Nenhum finding existente no projeto. Esta é a primeira sprint — sem armadilhas históricas a reportar."
+  ],
+  "reuseCandidates": []
+}
