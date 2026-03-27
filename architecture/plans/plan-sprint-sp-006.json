@@ -1,0 +1,83 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Criar workspace apps/web com Astro, TailwindCSS e estrutura base",
+      "description": "Como frontend_specialist, eu quero criar o workspace @taskflow/web do zero com Astro configurado para output estático, TailwindCSS com tokens de design, fonte Inter via @fontsource/inter, layout Base.astro, e integração ao pipeline Turborepo. Este workspace deve ser completamente isolado de apps/api, packages/db e packages/shared.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "pnpm --filter @taskflow/web build executa sem erros e gera apps/web/dist/index.html",
+        "astro check retorna zero erros de tipo",
+        "O workspace @taskflow/web aparece em pnpm list -r",
+        "astro.config.mjs declara output: 'static' e integra @astrojs/cloudflare e @astrojs/tailwind",
+        "tailwind.config.mjs extende theme com cores bg:#0a0a0a, accent:#00fa62, text-primary:#f5f5f5, text-muted:#888888 e fontFamily Inter",
+        "Base.astro importa @fontsource/inter/400.css, /600.css e /700.css — sem Google Fonts CDN",
+        "Base.astro inclui meta tags SEO: title, description, og:title, og:description, viewport",
+        "package.json define scripts: dev=astro dev, build=astro check && astro build, preview=astro preview, check=astro check",
+        "Nenhum import de apps/api, packages/db ou packages/shared existe em apps/web",
+        "Nenhuma diretiva client:load, client:idle ou client:visible é usada",
+        "O HTML final não contém tags <script> de runtime (validar com grep -r '<script' apps/web/dist/)",
+        "turbo.json inclui outputs: [dist/**] no pipeline de build global",
+        "Conforme SOP de Edge Compatibility: nenhum pacote Node.js-nativo é importado"
+      ],
+      "subtasks": [
+        "Criar apps/web/package.json com nome @taskflow/web e dependências: astro, @astrojs/tailwind, @astrojs/cloudflare, tailwindcss, @fontsource/inter",
+        "Criar apps/web/astro.config.mjs com output: 'static', integrations: [tailwind(), cloudflare()]",
+        "Criar apps/web/tailwind.config.mjs com tokens de design (cores + fontFamily Inter)",
+        "Criar apps/web/tsconfig.json extendendo tooling/typescript/base.json",
+        "Criar apps/web/src/layouts/Base.astro com imports de fonte Inter, meta tags SEO, tag html com class scroll-smooth",
+        "Criar apps/web/src/data/content.ts com hero, features e footer exportados como constantes tipadas",
+        "Criar apps/web/public/favicon.svg com ícone TF em verde neon (#00fa62) sobre fundo escuro (#0a0a0a)",
+        "Criar apps/web/public/_headers com X-Frame-Options: DENY, X-Content-Type-Options: nosniff, Referrer-Policy: strict-origin-when-cross-origin",
+        "Atualizar turbo.json para incluir dist/** nos outputs do pipeline build global"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "apps/web/src/layouts/Base.astro",
+        "apps/web/src/data/content.ts",
+        "apps/web/public/favicon.svg",
+        "apps/web/public/_headers",
+        "turbo.json"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Implementar componentes Hero, Features e Footer e montar index.astro",
+      "description": "Como frontend_specialist, eu quero implementar os três componentes visuais da landing (Hero, Features, Footer) e montá-los na página index.astro. Hero exibe headline + CTA âncora para #features sem JS. Features exibe 3 cards em grid com SVGs inline aria-hidden. Footer exibe copyright com ano gerado em build-time.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [
+        "T1"
+      ],
+      "acceptanceCriteria": [
+        "Hero.astro renderiza h1 com headline, p com subtítulo e <a href='#features'> estilizado com bg-accent text-bg",
+        "Clicar em 'Ver funcionalidades' rola até id=features via CSS scroll-smooth (sem JS)",
+        "Features.astro renderiza seção com id=features e exatamente 3 cards em grid-cols-1 md:grid-cols-3",
+        "Cada card contém SVG inline único com aria-hidden=true, width=24 height=24, stroke ou fill em #00fa62 (stroke-accent ou text-accent), h3 em text-primary e p em text-muted",
+        "SVGs são embutidos no HTML — nenhum tag <img src=*.svg> presente",
+        "Footer.astro exibe copyright com ano gerado via new Date().getFullYear() no frontmatter Astro (build-time), texto em text-muted, border-top sutil",
+        "index.astro compõe Base.astro + Hero + Features + Footer sem diretivas client:*",
+        "Background global #0a0a0a aplicado via bg-bg no body ou html",
+        "Em viewport 375px o texto não transborda e o botão CTA é clicável sem zoom",
+        "Em viewport ≥1024px os 3 feature cards estão em linha (grid 3 colunas)",
+        "astro check && astro build passam com zero erros após a implementação",
+        "O HTML de dist/index.html não contém <script> de runtime (grep -r '<script' apps/web/dist/ retorna vazio ou apenas preload de fonte sem lógica)"
+      ],
+      "subtasks": [
+        "Criar apps/web/src/components/Hero.astro com h1, p subtítulo e <a href='#features'> com classes Tailwind accent",
+        "Criar apps/web/src/components/Features.astro com seção id=features, grid 1→3 colunas, 3 cards com SVG inline único por feature lido de content.ts",
+        "Criar apps/web/src/components/Footer.astro com frontmatter const year = new Date().getFullYear() e parágrafo copyright com border-top",
+        "Criar apps/web/src/pages/index.astro importando Base.astro como layout e compondo Hero + Features + Footer"
+      ],
+      "targetFiles": [
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro"
+      ]
+    }
+  ]
+}
