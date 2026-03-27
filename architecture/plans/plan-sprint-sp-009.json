@@ -1,0 +1,76 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Configurar workspace apps/web com Astro, Tailwind e dependências base",
+      "description": "Criar a estrutura completa do workspace apps/web: package.json, tsconfig.json, astro.config.mjs, tailwind.config.mjs, wrangler.toml, .gitignore e registrar no pnpm-workspace.yaml. Nenhum componente ainda — apenas scaffolding e configuração.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "apps/web/package.json tem name: 'web' e lista astro, @astrojs/tailwind, tailwindcss, @fontsource/inter como dependências",
+        "apps/web/tsconfig.json estende astro/tsconfigs/strict",
+        "apps/web/astro.config.mjs configura integração @astrojs/tailwind",
+        "apps/web/tailwind.config.mjs define colors: { base: '#0a0a0a', accent: '#00fa62', muted: '#a1a1aa', subtle: '#27272a' } e fontFamily.sans: ['Inter', 'sans-serif']",
+        "apps/web/wrangler.toml tem name='taskflow-web', compatibility_date='2025-01-01' e [pages_build_output_dir] dir='dist' — zero bindings",
+        "apps/web está registrado no pnpm-workspace.yaml da raiz (sem sobrescrever entradas existentes)",
+        "apps/web/.gitignore inclui dist/, .astro/, node_modules/",
+        "astro check e astro build passam sem erros no workspace"
+      ],
+      "subtasks": [
+        "Verificar pnpm-workspace.yaml existente e adicionar 'apps/web' apenas se ausente",
+        "Criar apps/web/package.json com name 'web', scripts build/dev/check e dependências corretas",
+        "Criar apps/web/tsconfig.json estendendo astro/tsconfigs/strict",
+        "Criar apps/web/astro.config.mjs com import de tailwind() na lista de integrations",
+        "Criar apps/web/tailwind.config.mjs com content glob e design tokens conforme REQ-004",
+        "Criar apps/web/wrangler.toml com configuração mínima Cloudflare Pages (REQ-014)",
+        "Criar apps/web/.gitignore (REQ-015)"
+      ],
+      "targetFiles": [
+        "pnpm-workspace.yaml",
+        "apps/web/package.json",
+        "apps/web/tsconfig.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/wrangler.toml",
+        "apps/web/.gitignore"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Implementar componentes Astro e página index da landing page TaskFlow",
+      "description": "Criar os 4 componentes (BaseLayout.astro, Hero.astro, Features.astro, Footer.astro) e a página index.astro. Zero JS no cliente — nenhuma diretiva client:*. SVGs inline nos cards de features. CTA como <a href='#features'>. @fontsource/inter importado apenas no BaseLayout.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [
+        "T1"
+      ],
+      "acceptanceCriteria": [
+        "BaseLayout.astro contém <meta charset>, <meta viewport>, <meta description>, <title>TaskFlow</title> e import '@fontsource/inter'",
+        "Hero.astro renderiza H1 com tagline, parágrafo de subtítulo e <a href='#features'> como CTA — sem <button> e sem <script>",
+        "Features.astro renderiza seção com id='features' e 3 cards com SVGs inline: crosshair/target (Foco), grid/layers (Tudo em um lugar), bar-chart/trending-up (Progresso)",
+        "Footer.astro contém apenas texto de copyright — sem links, sem ícones, sem navegação",
+        "index.astro compõe exclusivamente <BaseLayout><Hero /><Features /><Footer /></BaseLayout> sem lógica de negócio",
+        "Grid de features: 1 coluna no mobile, 3 colunas em lg: (REQ-016)",
+        "Background global usa cor base (#0a0a0a), elementos de destaque usam accent (#00fa62)",
+        "dist/index.html inspecionado após build: zero tags <script> presentes (REQ-012)",
+        "astro check passa sem erros de tipo ou de template (REQ-013)",
+        "Nenhuma referência a Google Fonts ou CDN externo no HTML gerado (R-02)",
+        "SVGs são inline no HTML — nenhuma tag <img src=*.svg> presente (R-03)"
+      ],
+      "subtasks": [
+        "Criar apps/web/src/components/BaseLayout.astro com head completo e import @fontsource/inter",
+        "Criar apps/web/src/components/Hero.astro com H1, subtítulo e CTA <a href='#features'>",
+        "Criar apps/web/src/components/Features.astro com seção id='features', grid responsivo e 3 cards com SVGs inline",
+        "Criar apps/web/src/components/Footer.astro com copyright simples",
+        "Criar apps/web/src/pages/index.astro compondo os 4 componentes sem lógica adicional",
+        "Executar astro build e inspecionar dist/index.html confirmando ausência de <script>"
+      ],
+      "targetFiles": [
+        "apps/web/src/components/BaseLayout.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro"
+      ]
+    }
+  ]
+}
