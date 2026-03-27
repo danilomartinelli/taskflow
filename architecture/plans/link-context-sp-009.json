@@ -1,0 +1,20 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[PRD-SCOPE]: Sprint sp-009 cria o workspace apps/web do zero. O code-map confirma que apps/web não possui componentes registrados — caminho livre para estrutura nova sem risco de colisão com código existente.",
+    "[STACK]: Workspace Astro + TailwindCSS puro. Zero bindings Cloudflare (D1, R2, KV, Queues). Zero variáveis de ambiente. Build estático com output em apps/web/dist/.",
+    "[ESTRUTURA]: Criar 4 arquivos de componente em apps/web/src/components/ (BaseLayout.astro, Hero.astro, Features.astro, Footer.astro) e 1 página em apps/web/src/pages/index.astro. index.astro deve ser exclusivamente composição — sem lógica de negócio.",
+    "[FONTES]: @fontsource/inter deve ser importado APENAS no BaseLayout.astro. Proibido qualquer link para Google Fonts ou CDN externo — R-02 do PRD.",
+    "[ZERO JS]: Nenhuma diretiva client:* permitida. Nenhuma tag <script> no HTML final. CTA usa <a href='#features'> para navegação nativa. Smooth scroll via CSS scroll-behavior: smooth se necessário — nunca via JS.",
+    "[SVG INLINE]: Ícones das 3 features devem ser SVG inline no Features.astro (não <img src=.svg>). Isso permite colorização via classes Tailwind sem JS. Ícones: crosshair/target (Foco), grid/layers (Tudo em um lugar), bar-chart/trending-up (Progresso).",
+    "[WRANGLER]: Criar apps/web/wrangler.toml com name='taskflow-web', compatibility_date='2025-01-01' e [pages_build_output_dir] dir='dist'. NENHUM binding deve constar neste arquivo.",
+    "[TURBOREPO]: package.json de apps/web deve ter name: 'web' para seleção via pnpm turbo build --filter=web. tsconfig.json deve estender astro/tsconfigs/strict.",
+    "[WORKSPACE]: Verificar pnpm-workspace.yaml na raiz antes de modificar — nunca sobrescrever entradas existentes de outros workspaces (apps/api, etc.). Apenas adicionar 'apps/web' se não estiver listado.",
+    "[VALIDAÇÃO]: Sem Vitest nesta sprint. Gates de qualidade são apenas: astro check (zero erros de tipo/template) e astro build (zero erros de compilação). Inspecionar dist/index.html para confirmar ausência de tags <script>.",
+    "[DESIGN TOKENS]: Configurar tailwind.config.mjs com colors: { base: '#0a0a0a', accent: '#00fa62', muted: '#a1a1aa', subtle: '#27272a' } e fontFamily.sans: ['Inter', 'sans-serif']. Background global: base (#0a0a0a). Acento: accent (#00fa62).",
+    "[RESPONSIVIDADE]: Grid de features em 1 coluna no mobile, 3 colunas em lg:. Breakpoints Tailwind padrão — sem custom breakpoints."
+  ],
+  "reuseCandidates": []
+}
