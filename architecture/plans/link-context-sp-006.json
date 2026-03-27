@@ -1,0 +1,19 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[CODE-MAP]: O projeto já possui `apps/api` mas NÃO possui `apps/web`. O workspace `apps/web` deve ser criado do zero como novo pacote pnpm com nome `@taskflow/web`. Confirme que `pnpm-workspace.yaml` inclui `apps/*` para que o novo workspace seja detectado automaticamente.",
+    "[CODE-MAP]: O `turbo.json` existente foi criado para o pipeline do `apps/api`. Ao adicionar `apps/web`, garanta que o pipeline global de `build` inclui `dist/**` nos outputs para que o Turborepo faça cache correto do build Astro.",
+    "[CODE-MAP]: O monorepo já possui `packages/shared` com tipos TypeScript. A landing NÃO deve importar nada de `packages/shared`, `packages/db` ou `apps/api` — isolamento total é um requisito hard (REST-002 do PRD).",
+    "[PLATFORM]: Esta sprint não utiliza nenhum binding Cloudflare (sem D1, R2, KV, AI, Queues). O adapter `@astrojs/cloudflare` é usado apenas para compatibilidade de deploy no Cloudflare Pages com `output: static` — gera HTML puro sem Workers runtime. Nenhuma configuração de binding é necessária.",
+    "[ARCH]: O `astro.config.mjs` DEVE declarar `output: static`. Qualquer uso de `output: server` ou `output: hybrid` viola REST-001 e deve ser tratado como erro de build bloqueante.",
+    "[ARCH]: É PROIBIDO usar diretivas `client:load`, `client:idle`, `client:visible` ou qualquer hidratação client-side (REST-003). Todos os componentes devem ser `.astro` puros sem islands de framework (React, Vue, etc.).",
+    "[ARCH]: A fonte Inter deve ser instalada via `@fontsource/inter` e importada no `Base.astro` layout (`import @fontsource/inter/400.css` etc.) — NUNCA via link para Google Fonts CDN (REST-004). Isso garante zero requests externos e funciona offline.",
+    "[ARCH]: O ano no footer deve ser gerado via `new Date().getFullYear()` no frontmatter Astro (build-time), nunca em script client-side. O HTML resultante terá o ano hardcoded — comportamento intencional (EDGE-003).",
+    "[ARCH]: SVGs dos feature cards devem ser inline no HTML (não `<img src=*.svg>`), com `aria-hidden=true` e dimensões explícitas. Cor de stroke/fill deve ser `#00fa62`. Isso elimina 3 requests HTTP adicionais (EDGE-004).",
+    "[VALIDATION]: Para validar o requisito de zero JS no cliente (REQ-009), após `astro build` execute: `grep -r '<script' apps/web/dist/` — o resultado deve estar vazio ou conter apenas preload de fonte sem lógica de negócio.",
+    "[VALIDATION]: O script `build` no `package.json` de `apps/web` deve encadear `astro check && astro build` (REQ-010). O `astro check` com zero erros é gate obrigatório antes do deploy (REST-005)."
+  ],
+  "reuseCandidates": []
+}
