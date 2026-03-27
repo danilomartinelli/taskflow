@@ -1,0 +1,71 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Scaffold apps/web — estrutura base Astro + Tailwind + Fontsource",
+      "description": "Criar do zero o workspace apps/web com package.json (@taskflow/web), astro.config.mjs (output: static), tailwind.config.mjs (cores background/accent), tsconfig.json e o layout base Base.astro com meta SEO, import @fontsource/inter e scroll-smooth no html.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "package.json tem name '@taskflow/web' e scripts build (astro build), check (astro check) e dev (astro dev)",
+        "astro.config.mjs define output: 'static' e integração @astrojs/tailwind — nenhuma diretiva client:* presente em qualquer arquivo",
+        "tailwind.config.mjs define content: ['./src/**/*.{astro,html}'] e theme.extend.colors com background: '#0a0a0a' e accent: '#00fa62'",
+        "Base.astro importa '@fontsource/inter' (ou variante 400/variable) no <head> — proibido Google Fonts CDN",
+        "CSS global inclui html { scroll-behavior: smooth; } ou classe Tailwind scroll-smooth aplicada no elemento <html>",
+        "Meta tags presentes no <head>: <title>, <meta name='description'>, <meta name='viewport'>",
+        "Typecheck passa: astro check sem erros"
+      ],
+      "subtasks": [
+        "Criar apps/web/package.json com name '@taskflow/web', devDependencies (astro ^4, @astrojs/tailwind ^5, tailwindcss ^3) e dependency (@fontsource/inter ^5), scripts build/check/dev",
+        "Criar apps/web/astro.config.mjs com output: 'static' e integrations: [tailwind()]",
+        "Criar apps/web/tailwind.config.mjs com content glob e theme.extend.colors {background, accent}",
+        "Criar apps/web/tsconfig.json estendendo astro/tsconfigs/strict",
+        "Criar apps/web/src/layouts/Base.astro com <html class='scroll-smooth'>, <head> (fontsource import, meta SEO) e <slot /> no <body>"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "apps/web/src/layouts/Base.astro"
+      ]
+    },
+    {
+      "id": "T2",
+      "title": "Implementar componentes da landing page e página index",
+      "description": "Criar Hero.astro, Features.astro, FeatureCard.astro (SVG inline, sem <img>), Footer.astro e a página raiz index.astro que os compõe. Executar astro build e confirmar ausência de bundles .js no dist/.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [
+        "T1"
+      ],
+      "acceptanceCriteria": [
+        "Hero.astro contém <h1>, <p> e <a href='#features'> como CTA — sem client:*",
+        "Features.astro tem id='features' e renderiza exatamente 3 instâncias de FeatureCard",
+        "FeatureCard.astro usa SVG inline no markup — proibido <img> ou <Image> do Astro para ícones",
+        "Layout responsivo da seção features usa Tailwind grid-cols-1 md:grid-cols-3",
+        "Footer.astro usa tag semântica <footer> com texto de copyright",
+        "index.astro importa Base.astro como layout e compõe Hero, Features e Footer",
+        "astro build conclui sem erros; inspecionar apps/web/dist/ — nenhum arquivo .js de bundle de cliente presente",
+        "apps/web/public/favicon.svg criado com ícone SVG minimalista",
+        "Typecheck passa: astro check sem erros"
+      ],
+      "subtasks": [
+        "Criar apps/web/src/components/FeatureCard.astro com props {icon (SVG string), title, description} e SVG inline",
+        "Criar apps/web/src/components/Hero.astro com h1, parágrafo subtítulo e <a href='#features'> estilizado como botão com accent color",
+        "Criar apps/web/src/components/Features.astro com id='features', grid Tailwind e 3 FeatureCard hardcoded com ícones SVG inline distintos",
+        "Criar apps/web/src/components/Footer.astro com <footer> semântico e copyright",
+        "Criar apps/web/src/pages/index.astro compondo Base.astro + Hero + Features + Footer",
+        "Criar apps/web/public/favicon.svg minimalista",
+        "Rodar astro build e verificar dist/ — confirmar ausência de arquivos .js de bundle"
+      ],
+      "targetFiles": [
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/FeatureCard.astro",
+        "apps/web/src/components/Footer.astro",
+        "apps/web/src/pages/index.astro",
+        "apps/web/public/favicon.svg"
+      ]
+    }
+  ]
+}
