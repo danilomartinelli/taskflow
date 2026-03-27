@@ -1,0 +1,49 @@
+{
+  "tasks": [
+    {
+      "id": "T1",
+      "title": "Setup do Workspace Astro (apps/web)",
+      "description": "Criar o workspace apps/web no monorepo Turborepo com todas as configurações necessárias: package.json, astro.config.mjs, tailwind.config.mjs, tsconfig.json e wrangler.toml. Este workspace deve ser detectado pelo pnpm e integrado ao pipeline turbo run build.",
+      "requiredSpecialist": "FrontendSpecialist",
+      "dependencies": [],
+      "acceptanceCriteria": [
+        "pnpm --filter web build executa astro build e gera apps/web/dist/ sem erros (exit code 0)",
+        "pnpm --filter web check-types executa astro check sem erros de tipo (exit code 0)",
+        "apps/web está listado em pnpm-workspace.yaml sob apps/*",
+        "astro.config.mjs define output: 'static', adapter cloudflare() e integração tailwind",
+        "wrangler.toml define name='taskflow-web' e pages_build_output_dir='dist' sem bindings",
+        "dist/index.html gerado não contém tags <script src='...'> com JavaScript de aplicação",
+        "Fonte Inter carregada via @fontsource/inter (import CSS no BaseLayout.astro) — sem <link> para CDN externo",
+        "Zero client:* directives em qualquer componente .astro"
+      ],
+      "subtasks": [
+        "Criar apps/web/package.json com name '@taskflow/web', scripts dev/build/check-types mapeados para astro dev/build/check",
+        "Instalar dependências: astro, @astrojs/tailwind, @fontsource/inter, tailwindcss (prod) e @astrojs/cloudflare, typescript (dev)",
+        "Criar apps/web/astro.config.mjs com output: 'static', adapter: cloudflare(), integrations: [tailwind()]",
+        "Criar apps/web/tailwind.config.mjs com tema customizado: cores bg #0a0a0a, surface #111111, accent #00fa62, text-primary #f5f5f5, text-secondary #a3a3a3, border #1f1f1f e fontFamily sans: ['Inter', 'sans-serif']",
+        "Criar apps/web/tsconfig.json extendendo configuração base do Astro",
+        "Criar apps/web/wrangler.toml com name='taskflow-web', pages_build_output_dir='dist', compatibility_date='2025-01-01' sem bindings",
+        "Criar apps/web/public/favicon.svg com SVG minimalista",
+        "Criar apps/web/src/layouts/BaseLayout.astro importando @fontsource/inter/400.css e @fontsource/inter/600.css, com meta tags obrigatórias e <slot />",
+        "Criar apps/web/src/pages/index.astro compondo BaseLayout + Hero + Features + Footer",
+        "Criar apps/web/src/components/Hero.astro com <h1>, subtítulo, e <a href='#features'> como CTA (não <button>)",
+        "Criar apps/web/src/components/Features.astro com <section id='features'>, grid responsivo e 3 <article> com SVG inline, <h3> e <p>",
+        "Criar apps/web/src/components/Footer.astro com texto de copyright centralizado",
+        "Verificar que turbo.json raiz já mapeia dist/** no task build (sem alteração necessária se já presente)"
+      ],
+      "targetFiles": [
+        "apps/web/package.json",
+        "apps/web/astro.config.mjs",
+        "apps/web/tailwind.config.mjs",
+        "apps/web/tsconfig.json",
+        "apps/web/wrangler.toml",
+        "apps/web/public/favicon.svg",
+        "apps/web/src/layouts/BaseLayout.astro",
+        "apps/web/src/pages/index.astro",
+        "apps/web/src/components/Hero.astro",
+        "apps/web/src/components/Features.astro",
+        "apps/web/src/components/Footer.astro"
+      ]
+    }
+  ]
+}
