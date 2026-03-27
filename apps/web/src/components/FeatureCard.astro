@@ -1,20 +1,38 @@
 ---
 interface Props {
+  icon: 'check-circle' | 'users' | 'zap';
   title: string;
   description: string;
 }
 
-const { title, description } = Astro.props;
+const {
+  icon,
+  title,
+  description
+} = Astro.props;
+
+const icons = {
+  'check-circle': `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-check-circle w-8 h-8 text-neon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path d="M12 12m-9 0a9 9 0 1 0 18 0a9 9 0 1 0 -18 0"></path>
+    <path d="M9 12l2 2l4 -4"></path>
+  </svg>`,
+  users: `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-users w-8 h-8 text-neon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path d="M9 7m-4 0a4 4 0 1 0 8 0a4 4 0 1 0 -8 0"></path>
+    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2"></path>
+    <path d="M16 3.12a4 4 0 0 1 0 7.76"></path>
+    <path d="M21 21v-2a4 4 0 0 0 -3 -3.85"></path>
+  </svg>`,
+  zap: `<svg xmlns="http://www.w3.org/2000/svg" class="icon icon-tabler icon-tabler-zap w-8 h-8 text-neon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+    <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+    <path d="M13 2l-3 10h4l-3 8l7 -12h-4l3 -8z"></path>
+  </svg>`,
+};
 ---
 
-<div
-  class="bg-surface border border-border p-6 rounded-xl flex flex-col items-center text-center"
->
-  <div class="text-neon mb-4">
-    <slot name="icon" />
-  </div>
-  <h3 class="text-2xl font-bold mb-2">{title}</h3>
-  <p class="text-muted">
-    {description}
-  </p>
+<div class="p-6 bg-surface rounded-lg shadow-lg border border-neon/30">
+  <div class="mb-4" set:html={icons[icon]} />
+  <h3 class="text-xl font-bold text-white mb-2">{title}</h3>
+  <p class="text-muted">{description}</p>
 </div>
