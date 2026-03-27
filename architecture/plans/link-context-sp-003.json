@@ -1,0 +1,17 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[CODE-MAP]: Monorepo limpo — apps/web não existe ainda. Crie o workspace do zero em apps/web/ conforme REQ-001.",
+    "[PRD]: Stack é 100% estática: Astro 4 + TailwindCSS 3 + @fontsource/inter. Zero bindings Cloudflare, zero secrets, zero API keys externas.",
+    "[PRD]: output: 'static' é obrigatório no astro.config.ts — NÃO use output: 'server' ou 'hybrid'. Deploy via Cloudflare Pages (wrangler pages deploy dist/), NÃO via Workers.",
+    "[PRD]: Zero JavaScript no cliente é requisito hard. PROIBIDO usar diretivas client:*, importar React/Vue/Svelte, ou adicionar tags <script>. Verificar que dist/_astro/ não contém arquivos .js após build.",
+    "[PRD]: set:html no Features.astro (REQ-006) é diretiva Astro nativa e segura para SVG inline trusted em build time — não é XSS risk.",
+    "[PRD]: turbo.json pode já existir na raiz (foi criado na sp-000). Se existir, ADICIONE apenas as tasks build/typecheck/dev sem sobrescrever o arquivo completo.",
+    "[PRD]: Gates de CI para esta sprint são APENAS tsc --noEmit e astro build. Sem vitest, sem Playwright — explicitamente excluído pelo CTO.",
+    "[PRD]: @fontsource/inter — importe apenas os pesos utilizados (400, 500, 600, 700) conforme REQ-004 para evitar CSS desnecessário no bundle.",
+    "[PRD]: new Date().getFullYear() no Footer.astro executa em build time pelo Astro, não no browser — não viola zero-JS."
+  ],
+  "reuseCandidates": []
+}
