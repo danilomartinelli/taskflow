@@ -1,0 +1,19 @@
+{
+  "status": "ready",
+  "canProceed": true,
+  "missingSecrets": [],
+  "architectNotes": [
+    "[INFO]: Sprint sp-013 cria apps/web do zero — monorepo está limpo sem workspace web existente. Nenhum código legado para reutilizar.",
+    "[INFO]: Zero bindings Cloudflare necessários. A página é 100% estática (output: static). Nenhum D1, R2, KV, AI ou Queue envolvido.",
+    "[INFO]: Nenhuma API externa. Todas as dependências são pacotes npm build-time apenas (@fontsource/inter é CSS puro, seguro para Cloudflare Pages).",
+    "[INFO]: Deploy via Cloudflare Pages (não Workers). Build command: pnpm --filter web build. Output: apps/web/dist. Root: / (raiz do monorepo).",
+    "[ARCH]: Configurar turbo.json raiz para reconhecer apps/web — o output dist/** já está mapeado no schema atual, verificar se pnpm-workspace.yaml cobre apps/*.",
+    "[ARCH]: astro.config.mjs deve usar output: static com adapter @astrojs/cloudflare. Mesmo sendo static, o adapter é necessário para Cloudflare Pages.",
+    "[ARCH]: Zero client:* directives permitidas. Todos os componentes devem ser .astro puro — proibido @astrojs/react, @astrojs/vue ou qualquer island.",
+    "[ARCH]: Fonte Inter deve ser self-hosted via @fontsource/inter (import CSS no BaseLayout.astro). Proibido <link> para Google Fonts ou CDN externo.",
+    "[ARCH]: Ícones SVG devem ser inline no HTML (colados diretamente nos .astro) — sem biblioteca de ícones em runtime, sem <img src>. stroke=#00fa62, aria-hidden=true.",
+    "[ARCH]: CTA deve ser <a href=#features> (âncora HTML nativa), NÃO <button> com JavaScript. Scroll nativo do browser.",
+    "[VALIDATION]: Para validar o build: (1) pnpm --filter web check-types deve retornar exit 0 via astro check. (2) pnpm --filter web build deve gerar dist/ com exit 0. (3) Inspecionar dist/index.html — não deve conter <script src=...> com JS de aplicação."
+  ],
+  "reuseCandidates": []
+}
