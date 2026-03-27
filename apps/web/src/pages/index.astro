@@ -1,14 +1,14 @@
 ---
-import Base from "../layouts/Base.astro";
-import Hero from "../components/Hero.astro";
-import Features from "../components/Features.astro";
-import Footer from "../components/Footer.astro";
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import Features from '../components/Features.astro';
+import Footer from '../components/Footer.astro';
 ---
 
-<Base title="TaskFlow - Organize suas tarefas." description="A ferramenta definitiva para produtividade e colaboração.">
+<BaseLayout title="TaskFlow - Gerencie suas tarefas com facilidade" description="Plataforma de gerenciamento de tarefas que te ajuda a organizar seu dia a dia e aumentar sua produtividade.">
   <main>
     <Hero />
     <Features />
   </main>
   <Footer />
-</Base>
+</BaseLayout>
